@@ -3,10 +3,8 @@ name = "plotlydash_flask_tutorial"
 version = "0.1.0"
 description = "Integrate Plotly Dash into your Flask applications."
 authors = ["Todd Birchard <toddbirchard@gmail.com>"]
-maintainers = ["Todd Birchard <toddbirchard@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://hackersandslackers.com/plotly-dash-with-flask/"
 repository = "https://github.com/toddbirchard/plotlydash-flask-tutorial/"
 documentation = "https://hackersandslackers.com/plotly-dash-with-flask/"
 keywords = [
@@ -41,9 +39,6 @@ isort = "*"
 
 [tool.poetry.scripts]
 run = "wsgi:app"
-
-[tool.poetry.urls]
-issues = "https://github.com/toddbirchard/plotlydash-flask-tutorial/issues"
 
 [build-system]
 requires = ["poetry>=1.1.13"]

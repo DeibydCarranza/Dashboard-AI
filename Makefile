@@ -36,8 +36,7 @@ $(VIRTUAL_ENVIRONMENT):
 
 .PHONY: run
 run: env
-	$(shell python3 -m wsgi)
-
+	$(LOCAL_PYTHON) -m wsgi
 
 .PHONY: install
 install:
@@ -45,6 +44,8 @@ install:
 	$(shell . .venv/bin/activate)
 	$(LOCAL_PYTHON) -m pip install --upgrade pip setuptools wheel
 	$(LOCAL_PYTHON) -m pip install -r requirements.txt
+	
+
 
 
 .PHONY: deploy
