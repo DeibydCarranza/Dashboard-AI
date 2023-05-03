@@ -50,7 +50,7 @@ Get up and running with `make deploy`:
 
 ```shell
 $ git clone https://github.com/hackersandslackers/plotlydash-flask-tutorial.git
-$ cd dashboard-flask-tutorial
+$ cd Dashboard-AI
 $ make deploy
 ``` 
 
