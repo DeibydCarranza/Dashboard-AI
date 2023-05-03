@@ -1,30 +1,11 @@
+![alt text](https://i.ibb.co/HV2x5P2/2022-04-17-16-06-08.png)
+![alt text](https://i.ibb.co/McLwSyJ/2022-04-17-16-06-38.png)
+![alt text](https://i.ibb.co/DK5SMKc/2022-04-17-16-06-23.png)
 
-<img src="https://www.educative.io/api/edpresso/shot/6166549980250112/image/5979145793175552" alt="JuveR" width="200px">
 
-# Dashboard AI
-Dashboard made from the Python framework called Dash for graphs.
-
-Using Python for BackEnd interpretation and React JS for FrontEnd configuration.
-
-# Plotly Dash Flask Tutorial
-
-![Python](https://img.shields.io/badge/Python-^3.9-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a)
-![Flask](https://img.shields.io/badge/Flask^2.0.0-blue.svg?longCache=true&logo=flask&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![Flask-Assets](https://img.shields.io/badge/Flask--Assets-v2.0-blue.svg?longCache=true&logo=flask&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![Pandas](https://img.shields.io/badge/Pandas-v^1.4.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![Dash](https://img.shields.io/badge/Dash-v^2.0.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![Plotly](https://img.shields.io/badge/Plotly-v^5.8.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&colorB=a3be8c)
-[![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/plotlydash-flask-tutorial.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/toddbirchard/plotlydash-flask-tutorial/issues)
-[![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/plotlydash-flask-tutorial.svg?style=flat-square&colorB=ebcb8b&colorA=4c566a)](https://github.com/toddbirchard/plotlydash-flask-tutorial/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/plotlydash-flask-tutorial.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/toddbirchard/plotlydash-flask-tutorial/network)
-
-![Plotly Dash Tutorial](./.github/dash@2x.jpg?raw=true)
+# Plotly Dash Flask 
 
 Make Plotly Dash part of your Flask Application by following this example.
-
-* **Tutorial**: https://hackersandslackers.com/plotly-dash-with-flask/
-* **Demo**: https://plotlydashflask.hackersandslackers.app/
 
 # Getting Started
 
@@ -34,6 +15,7 @@ Get set up locally in two steps:
 
 Replace the values in **.env.example** with your values and rename this file to **.env**:
 
+* `FLASK_APP`: Entry point of your application; should be `wsgi.py`.
 * `FLASK_ENV`: The environment in which to run your application; either `development` or `production`.
 * `SECRET_KEY`: Randomly generated string of characters used to encrypt your app's data.
 * `LESS_BIN` *(optional for static assets)*: Path to your local LESS installation via `which lessc`.
@@ -49,12 +31,56 @@ Replace the values in **.env.example** with your values and rename this file to 
 Get up and running with `make deploy`:
 
 ```shell
-$ git clone https://github.com/hackersandslackers/plotlydash-flask-tutorial.git
-$ cd dashboard-flask-tutorial
+$ git clone https://github.com/chigwell/dash-flask.git
+$ cd plotlydash-flask
 $ make deploy
 ``` 
+or use docker:
+
+### Docker
+```shell
+$ docker compose up
+``` 
+
+### Input file
+The fields in the file will be separated by commas but each row will vary in length as described below.
+
+A result will consist of:
+
+1. A constituency
+2. A repeating set of pairs with the party code and the votes cast
+
+So for example:
+
+    Cardiff West, 11014, C, 17803, L, 4923, UKIP, 2069, LD
+    Islington South & Finsbury, 22547, L, 9389, C, 4829, LD, 3375, UKIP, 3371, G, 309, Ind
+
+> **_NOTE:_** Constituency names containing a comma will be escaped as with '\\,'
+
+We want to transform this into a standard API that shows, per constituency:
+
+* the constituency name GET /api/constituencies
+* translates the party code into a full name GET /api/party/<code>
+* shows the total number of votes for each party GET /api/party/votes
+* shows the share of the vote as a percentage of all the votes cast GET /api/votes/share
+* shows who won the constituency GET /api/constituencies
+
+One of the API endpoitns should show the results for the whole of the UK:
+* number of total MPs per party GET /api/parliament-seats-per-party
+* number of total votes per party GET /api/votes/share
+
+
+### Codes
+
+* C - Conservative
+* L - Labour
+* SNP - Scottish National Party
+* LD - Liberal Democrats
+* G - Green Party
+* Ind - Independent
+
+
 
 -----
 
-**Hackers and Slackers** tutorials are free of charge. If you found this tutorial helpful, a [small donation](https://www.buymeacoffee.com/hackersslackers) would be greatly appreciated to keep us in business. All proceeds go towards coffee, and all coffee goes towards more content.
 
