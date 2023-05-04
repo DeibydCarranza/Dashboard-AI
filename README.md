@@ -56,5 +56,13 @@ $ make deploy
 
 -----
 
-**Hackers and Slackers** tutorials are free of charge. If you found this tutorial helpful, a [small donation](https://www.buymeacoffee.com/hackersslackers) would be greatly appreciated to keep us in business. All proceeds go towards coffee, and all coffee goes towards more content.
+### Prerequisites to modify
 
+```shell
+$ sudo apt-get install python3-pip
+$ sudo apt install npm
+$ sudo npm install -g less
+$ pip install lesscpy
+$ export PATH=$PATH:/usr/local/bin/
+
+``` 
