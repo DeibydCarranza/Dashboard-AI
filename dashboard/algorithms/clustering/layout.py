@@ -18,7 +18,7 @@ html_layout = """
                 <div class="nav-wrapper">
                 <a href="/">
                     <img src="/static/img/logo.png" class="logo" />
-                    <h1>Asociación</h1>
+                    <h1>Clustering</h1>
                 </a>
                 """ + navbar + """
                 </div>
