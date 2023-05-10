@@ -3,18 +3,16 @@ import dash
 from dash import dash_table
 from dash import dcc
 from dash import html
-from flask import Flask
 
 from .data import create_dataframe
 from .layout import html_layout
 
-# server = Flask(__name__)
 
-def init_dashboard2(server):
+def init_dashboard_cluster(server):
     """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
         server=server,
-        routes_pathname_prefix="/dashapp2/",
+        routes_pathname_prefix="/clustering/",
         external_stylesheets=[
             "/static/dist/css/styles.css",
             "https://fonts.googleapis.com/css?family=Lato",
@@ -38,12 +36,12 @@ def init_dashboard2(server):
                             "x": df["complaint_type"],
                             "text": df["complaint_type"],
                             "customdata": df["key"],
-                            "name": "2222222222222222",
+                            "name": "311 Calls by region.",
                             "type": "histogram",
                         }
                     ],
                     "layout": {
-                        "title": "Prueba vista desde el 2.",
+                        "title": "NYC 311 Calls category.",
                         "height": 500,
                         "padding": 150,
                     },

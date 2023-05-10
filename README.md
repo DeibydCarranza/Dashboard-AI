@@ -4,27 +4,25 @@
 # Dashboard AI
 Dashboard made from the Python framework called Dash for graphs.
 
-Using Python for BackEnd interpretation and React JS for FrontEnd configuration.
+Using Python for BackEnd interpretation and JS, CSS3 & HTML for FrontEnd configuration.
 
-# Plotly Dash Flask Tutorial
+# Dasboard - AI
 
 ![Python](https://img.shields.io/badge/Python-^3.9-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a)
-![Flask](https://img.shields.io/badge/Flask^2.0.0-blue.svg?longCache=true&logo=flask&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
+![Flask](https://img.shields.io/badge/Flask^2.2.3-blue.svg?longCache=true&logo=flask&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
 ![Flask-Assets](https://img.shields.io/badge/Flask--Assets-v2.0-blue.svg?longCache=true&logo=flask&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![Pandas](https://img.shields.io/badge/Pandas-v^1.4.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![Dash](https://img.shields.io/badge/Dash-v^2.0.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
-![Plotly](https://img.shields.io/badge/Plotly-v^5.8.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
+![Pandas](https://img.shields.io/badge/Pandas-v^2.0.0-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
+![Dash](https://img.shields.io/badge/Dash-v^2.9.3-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
+![Plotly](https://img.shields.io/badge/Plotly-v^5.14.1-blue.svg?longCache=true&logo=python&longCache=true&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&colorB=a3be8c)
-[![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/plotlydash-flask-tutorial.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/toddbirchard/plotlydash-flask-tutorial/issues)
-[![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/plotlydash-flask-tutorial.svg?style=flat-square&colorB=ebcb8b&colorA=4c566a)](https://github.com/toddbirchard/plotlydash-flask-tutorial/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/plotlydash-flask-tutorial.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/toddbirchard/plotlydash-flask-tutorial/network)
+[![GitHub Issues](https://img.shields.io/github/issues/DeibydCarranza/Dashboard-AI.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/DeibydCarranza/Dashboard-AI/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/DeibydCarranza/Dashboard-AI.svg?style=flat-square&colorB=ebcb8b&colorA=4c566a)](https://github.com/DeibydCarranza/Dashboard-AI/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/plotlydash-flask-tutorial.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/DeibydCarranza/Dashboard-AI/network)
 
 ![Plotly Dash Tutorial](./.github/dash@2x.jpg?raw=true)
 
 Make Plotly Dash part of your Flask Application by following this example.
 
-* **Tutorial**: https://hackersandslackers.com/plotly-dash-with-flask/
-* **Demo**: https://plotlydashflask.hackersandslackers.app/
 
 # Getting Started
 
@@ -49,7 +47,7 @@ Replace the values in **.env.example** with your values and rename this file to 
 Get up and running with `make deploy`:
 
 ```shell
-$ git clone https://github.com/hackersandslackers/plotlydash-flask-tutorial.git
+$ git clone https://github.com/DeibydCarranza/Dashboard-AI.git
 $ cd Dashboard-AI
 $ make deploy
 ``` 
@@ -66,3 +64,4 @@ $ pip install lesscpy
 $ export PATH=$PATH:/usr/local/bin/
 
 ``` 
+* **Tutorial**: https://hackersandslackers.com/plotly-dash-with-flask/
