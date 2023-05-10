@@ -5,6 +5,7 @@ __pycache__
 .idea
 .webassets-cache
 .venv
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

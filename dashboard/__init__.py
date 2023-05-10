@@ -16,11 +16,13 @@ def init_app():
         from .assets import compile_static_assets
 
         # Import Dash application
-        from .dashboard import init_dashboard
-        from .dashboard2 import init_dashboard2
+        from .algorithms.apriori import init_dashboard_apriori
+        from .algorithms.clustering import init_dashboard_cluster
+        from .algorithms.metrics import init_dashboard_metrics
 
-        app = init_dashboard(app)
-        app = init_dashboard2(app)
+        app = init_dashboard_apriori(app)
+        app = init_dashboard_cluster(app)
+        app = init_dashboard_metrics(app)
 
         # Compile static assets
         compile_static_assets(assets)
