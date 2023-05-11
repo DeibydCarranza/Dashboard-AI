@@ -13,17 +13,22 @@ html_layout = """
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
             {%css%}
         </head>
-        <body class="dash-template">
-            
-            """ + navbar + """
 
-            <div class="content-container">
+        <body class="dash-template">   
+            <header class="header-top">
                 <div class="nav-wrapper">
                     <a href="/">
-                        <img src="/static/img/logo.png" class="logo" />
                         <h1>Asociación</h1>
                     </a>
                 </div>
+            </header>         
+            """ + navbar + """
+
+            <div class="content-container">
+                <div>
+                    asfdf sdfsdfsdff
+                </div>
+                
                 {%app_entry%}
             </div>
             <footer>

@@ -6,6 +6,7 @@ from dash import html
 
 from .data import create_dataframe
 from .layout import html_layout
+from dash.dependencies import Input, Output, State
 
 
 def init_dashboard_apriori(server):
@@ -20,42 +21,67 @@ def init_dashboard_apriori(server):
     )
 
     # Load DataFrame
-    df = create_dataframe()
+    #df = create_dataframe()
 
     # Custom HTML layout
     dash_app.index_string = html_layout
 
-    # Create Layout
-    dash_app.layout = html.Div(
-        children=[
-            dcc.Graph(
-                id="histogram-graph",
-                figure={
-                    "data": [
-                        {
-                            "x": df["complaint_type"],
-                            "text": df["complaint_type"],
-                            "customdata": df["key"],
-                            "name": "311 Calls by region.",
-                            "type": "histogram",
-                        }
-                    ],
-                    "layout": {
-                        "title": "NYC 311 Calls category.",
-                        "height": 500,
-                        "padding": 150,
-                    },
-                },
-            ),
-            create_data_table(df),
-        ],
-        id="dash-container",
+    # Define el componente de carga de archivos
+    upload_component = html.Div([
+        dcc.Upload(
+            id='upload-data',
+            children=html.Div([
+                'Inserta un archivo ',
+                html.A('Select CSV File')
+            ]),
+            style={
+                'width': '100%',
+                'height': '60px',
+                'lineHeight': '60px',
+                'borderWidth': '1px',
+                'borderStyle': 'dashed',
+                'borderRadius': '5px',
+                'textAlign': 'center',
+                'margin': '10px'
+            },
+            # Permitir cargar múltiples archivos
+            multiple=False
+        ),
+        html.Div(id='output-data-upload'),
+    ])
+
+    # Define el gráfico de dispersión
+    scatter = {
+        'x': [1, 2, 3, 4],
+        'y': [10, 15, 13, 17],
+        'mode': 'markers',
+        'type': 'scatter'
+    }
+
+    layout = {
+        'title': 'Gráfico de Dispersión Simple',
+        'xaxis': {'title': 'Eje X'},
+        'yaxis': {'title': 'Eje Y'}
+    }
+
+    fig = {'data': [scatter], 'layout': layout}
+
+    scatter_graph = dcc.Graph(
+        id="histogram-graph",
+        figure=fig,
     )
+
+    # Combinar los dos diseños
+    dash_app.layout = html.Div(children=[
+        html.H1(children='Mi primera aplicación Dash'),
+        upload_component,
+        scatter_graph,
+    ])
     return dash_app.server
 
-
+""""
 def create_data_table(df):
-    """Create Dash datatable from Pandas DataFrame."""
+
     table = dash_table.DataTable(
         id="database-table",
         columns=[{"name": i, "id": i} for i in df.columns],
@@ -65,3 +91,4 @@ def create_data_table(df):
         page_size=300,
     )
     return table
+"""

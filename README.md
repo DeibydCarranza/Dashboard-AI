@@ -12,7 +12,9 @@
 [![GitHub Forks](https://img.shields.io/github/forks/DeibydCarranza/Dashboard-AI.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/DeibydCarranza/Dashboard-AI/network)
 
 
-![Logo](./.github/logo.jpg?raw=true)
+<p align="center">
+  <img src="./.github/logo.jpg" width="200px">
+</p>
 
 Dashboard made from the Python framework called Dash for graphs.
 
@@ -56,7 +58,7 @@ $ make deploy
 $ sudo apt-get install python3-pip
 $ sudo apt install npm
 $ sudo npm install -g less
-$ sudo pip install lesscpy
+$ pip install lesscpy
 $ export PATH=$PATH:/usr/local/bin/lessc
 
 ``` 

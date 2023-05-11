@@ -10,12 +10,11 @@ html {
   padding: 0 !important;
 }
 *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  margin: 0 ;
+  padding: 0 ;
+  box-sizing: border-box ;
+  font-family: 'Poppins', sans-serif ;
 }
-
 :root{
  
   --body-color: #E4E9F7;
@@ -49,6 +48,45 @@ body.dark{
   --toggle-color: #fff;
   --text-color: #ccc;
 }
+.header-top{
+  position: relative;
+  width: 100%;
+  padding: 30px 0 !important;
+  background: white !important;
+  box-shadow: 0 0 5px #bec6cf;
+  font-family: 'Lato', sans-serif;
+
+  .nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 1000px;
+    max-width: 90%;
+    margin: auto;
+
+    nav {
+      display: flex;
+    }
+
+    .logo {
+      display: inline-block;
+      width: 40px;
+    }
+
+    a {
+      color: #70829d;
+      font-size: 1em;
+      text-decoration: none;
+      transition: all 0.3s ease-out;
+    }
+  }
+  
+  &.dark {
+    background: #242424 !important;
+    box-shadow: 0 0 5px #d1d6db;
+  }
+}
+
 .home-template {
     .container {
       margin: 0 !important;
@@ -208,7 +246,7 @@ header .image-text .profession{
     justify-content: center;
 }
 
-.sidebar header .image img{
+.sidebar header.image img{
     width: 40px;
     border-radius: 6px;
 }
@@ -389,6 +427,28 @@ body.dark .home .text{
     margin-left: 250px; /* Ajusta este valor según el ancho del sidebar */
 
 }
+
+.dash-template {
+    h1 {
+      display: inline-block !important;
+      margin: 0 !important;
+      font-size: 1.5em !important;
+    }
+  
+    .logo {
+      width: 40px !important;
+      margin-right: 20px !important;
+  
+      &:hover {
+        opacity: .7 !important;
+      }
+    }
+  
+    .nav-wrapper a {
+      display: flex !important;
+      align-items: center !important;
+    }
+  }
 
 /* -- Media Queries -- */
 
