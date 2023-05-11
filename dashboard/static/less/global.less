@@ -3,10 +3,49 @@ html {
   height: 100% !important;
   margin: 0;
   padding: 0;
-  background: #e7ecf7 !important;
   font-family: 'Lato', sans-serif;
 }
 
 .row .col {
   padding: 0 !important;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+:root{
+ 
+  --body-color: #E4E9F7;
+  --sidebar-color: #FFF;
+  --primary-color: #ff0000;
+  --primary-color-light: #fff5f5;
+  --toggle-color: #DDD;
+  --text-color: #383838;
+  --tran-03: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.3s ease;
+  --tran-05: all 0.3s ease;
+}
+
+body{
+  min-height: 100vh;
+  background-color: var(--body-color);
+  transition: var(--tran-05);
+}
+
+::selection{
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+body.dark{
+  --body-color: #18191a;
+  --sidebar-color: #242526;
+  --primary-color: #3a3b3c;
+  --primary-color-light: #3a3b3c;
+  --toggle-color: #fff;
+  --text-color: #ccc;
 }

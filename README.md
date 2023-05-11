@@ -1,11 +1,3 @@
-
-<img src="https://www.educative.io/api/edpresso/shot/6166549980250112/image/5979145793175552" alt="JuveR" width="200px">
-
-# Dashboard AI
-Dashboard made from the Python framework called Dash for graphs.
-
-Using Python for BackEnd interpretation and JS, CSS3 & HTML for FrontEnd configuration.
-
 # Dasboard - AI
 
 ![Python](https://img.shields.io/badge/Python-^3.9-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a)
@@ -17,12 +9,16 @@ Using Python for BackEnd interpretation and JS, CSS3 & HTML for FrontEnd configu
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&colorB=a3be8c)
 [![GitHub Issues](https://img.shields.io/github/issues/DeibydCarranza/Dashboard-AI.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/DeibydCarranza/Dashboard-AI/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/DeibydCarranza/Dashboard-AI.svg?style=flat-square&colorB=ebcb8b&colorA=4c566a)](https://github.com/DeibydCarranza/Dashboard-AI/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/plotlydash-flask-tutorial.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/DeibydCarranza/Dashboard-AI/network)
+[![GitHub Forks](https://img.shields.io/github/forks/DeibydCarranza/Dashboard-AI.svg?style=flat-square&colorA=4c566a&colorB=ebcb8b)](https://github.com/DeibydCarranza/Dashboard-AI/network)
 
-![Plotly Dash Tutorial](./.github/dash@2x.jpg?raw=true)
 
-Make Plotly Dash part of your Flask Application by following this example.
+![Logo](./.github/logo.jpg?raw=true)
 
+Dashboard made from the Python framework called Dash for graphs.
+
+Using Python for BackEnd interpretation and JS, CSS3 & HTML for FrontEnd configuration.
+
+![Panel](./.github/dash@2x.jpg?raw=true)
 
 # Getting Started
 
@@ -60,8 +56,8 @@ $ make deploy
 $ sudo apt-get install python3-pip
 $ sudo apt install npm
 $ sudo npm install -g less
-$ pip install lesscpy
-$ export PATH=$PATH:/usr/local/bin/
+$ sudo pip install lesscpy
+$ export PATH=$PATH:/usr/local/bin/lessc
 
 ``` 
 * **Tutorial**: https://hackersandslackers.com/plotly-dash-with-flask/
