@@ -40,14 +40,6 @@ body{
   color: #fff;
 }
 
-body.dark{
-  --body-color: #18191a;
-  --sidebar-color: #242526;
-  --primary-color: #3a3b3c;
-  --primary-color-light: #3a3b3c;
-  --toggle-color: #fff;
-  --text-color: #ccc;
-}
 .header-top{
   position: relative;
   width: 100%;
@@ -269,10 +261,6 @@ header .image-text .profession{
     transition: var(--tran-05);
 }
 
-body.dark .sidebar header .toggle{
-    color: var(--text-color);
-}
-
 .sidebar.close .toggle{
     transform: translateY(-50%) rotate(0deg);
 }
@@ -320,10 +308,6 @@ body.dark .sidebar header .toggle{
 .sidebar li a:hover .text{
     color: var(--sidebar-color);
 }
-body.dark .sidebar li a:hover .icon,
-body.dark .sidebar li a:hover .text{
-    color: var(--text-color);
-}
 
 .sidebar .menu-bar{
     height: calc(100% - 55px);
@@ -351,12 +335,6 @@ body.dark .sidebar li a:hover .text{
     position: absolute;
 }
 .mode .sun-moon i.sun{
-    opacity: 0;
-}
-body.dark .mode .sun-moon i.sun{
-    opacity: 1;
-}
-body.dark .mode .sun-moon i.moon{
     opacity: 0;
 }
 
@@ -409,11 +387,40 @@ body.dark .mode .sun-moon i.moon{
     padding: 12px 60px;
 }
 
+body.dark{
+    --body-color: #18191a;
+    --sidebar-color: #242526;
+    --primary-color: #3a3b3c;
+    --primary-color-light: #3a3b3c;
+    --toggle-color: #fff;
+    --text-color: #ccc;
+}
+
+body.dark .sidebar header .toggle{
+    color: var(--text-color);
+}
+
+body.dark .sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .text{
+    color: var(--text-color);
+}
+
+body.dark .mode .sun-moon i.sun{
+    opacity: 1;
+}
+body.dark .mode .sun-moon i.moon{
+    opacity: 0;
+}
+
 body.dark .switch::before{
     left: 20px;
 }
 
 body.dark .home .text{
+    color: var(--text-color);
+}
+
+body.dark .content-container {
     color: var(--text-color);
 }
 /* -- main content -- */

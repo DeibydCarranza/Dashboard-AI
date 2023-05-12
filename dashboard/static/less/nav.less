@@ -116,10 +116,6 @@ header .image-text .profession{
     transition: var(--tran-05);
 }
 
-body.dark .sidebar header .toggle{
-    color: var(--text-color);
-}
-
 .sidebar.close .toggle{
     transform: translateY(-50%) rotate(0deg);
 }
@@ -167,10 +163,6 @@ body.dark .sidebar header .toggle{
 .sidebar li a:hover .text{
     color: var(--sidebar-color);
 }
-body.dark .sidebar li a:hover .icon,
-body.dark .sidebar li a:hover .text{
-    color: var(--text-color);
-}
 
 .sidebar .menu-bar{
     height: calc(100% - 55px);
@@ -198,12 +190,6 @@ body.dark .sidebar li a:hover .text{
     position: absolute;
 }
 .mode .sun-moon i.sun{
-    opacity: 0;
-}
-body.dark .mode .sun-moon i.sun{
-    opacity: 1;
-}
-body.dark .mode .sun-moon i.moon{
     opacity: 0;
 }
 
@@ -254,12 +240,4 @@ body.dark .mode .sun-moon i.moon{
     font-weight: 500;
     color: var(--text-color);
     padding: 12px 60px;
-}
-
-body.dark .switch::before{
-    left: 20px;
-}
-
-body.dark .home .text{
-    color: var(--text-color);
 }
