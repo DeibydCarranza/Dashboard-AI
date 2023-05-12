@@ -35,10 +35,9 @@ def init_dashboard_apriori(server):
                 html.A('Select CSV File')
             ]),
             style={
-                'width': '100%',
                 'height': '60px',
                 'lineHeight': '60px',
-                'borderWidth': '1px',
+                'borderWidth': '2px',
                 'borderStyle': 'dashed',
                 'borderRadius': '5px',
                 'textAlign': 'center',
