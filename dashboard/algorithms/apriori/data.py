@@ -3,12 +3,17 @@ import os
 import numpy as np
 import pandas as pd
 
-path_file = os.path.join(os.path.dirname(__file__), '../../',  'data', 'file.csv')
+path_file = os.path.join(os.path.dirname(__file__), '../../',  'data', 'temporal_Apriori.csv')
 
-def create_dataframe():
+# Variable global para almacenar la ruta del archivo cargado
+global uploaded_file_path
+uploaded_file_path = ''
+
+def create_dataframe_A():
     """Create Pandas DataFrame from local CSV."""
-    df = pd.read_csv(path_file, parse_dates=["created"])
+    if uploaded_file_path:
+        os.replace(uploaded_file_path, path_file)
+    df = pd.read_csv(path_file, header=None)
 
-    """Data processing"""
+    return df, path_file
 
-    return df

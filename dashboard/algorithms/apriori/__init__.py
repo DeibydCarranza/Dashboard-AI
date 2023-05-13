@@ -3,11 +3,12 @@ import dash
 from dash import dash_table
 from dash import dcc
 from dash import html
+import pandas as pd
 
-from .data import create_dataframe
+from .data import create_dataframe_A
+from ..tools import *
 from .layout import html_layout
 from dash.dependencies import Input, Output, State
-
 
 def init_dashboard_apriori(server):
     """Create a Plotly Dash dashboard."""
@@ -21,73 +22,52 @@ def init_dashboard_apriori(server):
     )
 
     # Load DataFrame
-    #df = create_dataframe()
+    df, path_file = create_dataframe_A()
 
     # Custom HTML layout
     dash_app.index_string = html_layout
 
-    # Define el componente de carga de archivos
-    upload_component = html.Div([
-        dcc.Upload(
-            id='upload-data',
-            children=html.Div([
-                'Inserta un archivo ',
-                html.A('Select CSV File')
-            ]),
-            style={
-                'height': '60px',
-                'lineHeight': '60px',
-                'borderWidth': '2px',
-                'borderStyle': 'dashed',
-                'borderRadius': '5px',
-                'textAlign': 'center',
-                'margin': '10px'
-            },
-            # Permitir cargar múltiples archivos
-            multiple=False
-        ),
-        html.Div(id='output-data-upload'),
-    ])
+    upload_component = box_upload(path_file)
 
-    # Define el gráfico de dispersión
-    scatter = {
-        'x': [1, 2, 3, 4],
-        'y': [10, 15, 13, 17],
-        'mode': 'markers',
-        'type': 'scatter'
-    }
-
-    layout = {
-        'title': 'Gráfico de Dispersión Simple',
-        'xaxis': {'title': 'Eje X'},
-        'yaxis': {'title': 'Eje Y'}
-    }
-
-    fig = {'data': [scatter], 'layout': layout}
-
-    scatter_graph = dcc.Graph(
-        id="histogram-graph",
-        figure=fig,
-    )
+    def create_data_table(df):
+        table = dash_table.DataTable(
+            id="database-table",
+            columns=[{"name": i, "id": i} for i in df.columns],
+            data=df.to_dict("records"),
+            sort_action="native",
+            sort_mode="native",
+            page_size=10,
+            style_table={'overflowX': 'scroll','overflowY': 'scroll'}
+        )
+        return table
 
     # Combinar los dos diseños
     dash_app.layout = html.Div(children=[
-        html.H1(children='Mi primera aplicación Dash'),
         upload_component,
-        scatter_graph,
+        create_data_table(df)
     ])
+    """
+    @dash_app.callback(
+        Output(component_id='database-table', component_property='data'),
+        Input(component_id='upload-data', component_property='contents'),
+        State(component_id='upload-data', component_property='filename')
+    )
+    def update_table(contents, filename):
+        if contents is not None:
+            content_type, content_string = contents.split(',')
+            file = base64.b64decode(content_string)
+            file_name = path_file  # agregar el timestamp al nombre del archivo
+            with open(file_name, 'wb') as f:
+                f.write(file)
+
+            df = pd.read_csv(file_name)
+
+            # Retorna los datos actualizados para la tabla
+            return df.to_dict("records")
+
+        # Si no se cargó un archivo, retorna los datos originales
+        return df.to_dict("records")
+
+    """
     return dash_app.server
 
-""""
-def create_data_table(df):
-
-    table = dash_table.DataTable(
-        id="database-table",
-        columns=[{"name": i, "id": i} for i in df.columns],
-        data=df.to_dict("records"),
-        sort_action="native",
-        sort_mode="native",
-        page_size=300,
-    )
-    return table
-"""

@@ -26,7 +26,8 @@ html_layout = """
 
             <div class="content-container">
                 <div>
-                    asfdf sdfsdfsdff
+                    <h1>Título del algoritmo</h1>
+                    <p>Agregar introducción y cosas random</p>
                 </div>
                 
                 {%app_entry%}
