@@ -12,18 +12,26 @@ html_layout = """
             {%favicon%}
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
             {%css%}
-            </head>
-            <body class="dash-template">
-            <header>
+        </head>
+
+        <body class="dash-template">   
+            <header class="header-top">
                 <div class="nav-wrapper">
-                <a href="/">
-                    <img src="/static/img/logo.png" class="logo" />
-                    <h1>Clustering</h1>
-                </a>
-                """ + navbar + """
+                    <a href="/">
+                        <h1>Clustering</h1>
+                    </a>
                 </div>
-            </header>
-            {%app_entry%}
+            </header>         
+            """ + navbar + """
+
+            <div class="content-container">
+                <div>
+                    <h1>Título del algoritmo</h1>
+                    <p>Agregar introducción y cosas random</p>
+                </div>
+                
+                {%app_entry%}
+            </div>
             <footer>
                 {%config%}
                 {%scripts%}

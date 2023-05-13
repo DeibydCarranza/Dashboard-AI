@@ -1,12 +1,13 @@
-"""Instantiate a Dash app."""
 import dash
 from dash import dash_table
 from dash import dcc
 from dash import html
+import pandas as pd
 
-from .data import create_dataframe
+from .data import create_dataframe_M
+from .. import tools as tl
 from .layout import html_layout
-
+from dash.dependencies import Input, Output, State
 
 def init_dashboard_metrics(server):
     """Create a Plotly Dash dashboard."""
@@ -20,48 +21,51 @@ def init_dashboard_metrics(server):
     )
 
     # Load DataFrame
-    df = create_dataframe()
+    df, path_file = create_dataframe_M()
 
     # Custom HTML layout
     dash_app.index_string = html_layout
 
-    # Create Layout
-    dash_app.layout = html.Div(
-        children=[
-            dcc.Graph(
-                id="histogram-graph",
-                figure={
-                    "data": [
-                        {
-                            "x": df["complaint_type"],
-                            "text": df["complaint_type"],
-                            "customdata": df["key"],
-                            "name": "311 Calls by region.",
-                            "type": "histogram",
-                        }
-                    ],
-                    "layout": {
-                        "title": "NYC 311 Calls category.",
-                        "height": 500,
-                        "padding": 150,
-                    },
-                },
-            ),
-            create_data_table(df),
-        ],
-        id="dash-container",
-    )
+    upload_component = tl.box_upload(path_file,dash_app)
+
+    dash_app.layout = html.Div(children=[
+        upload_component,
+        html.Div(id='table-container')
+    ])
+
+    @dash_app.callback(Output('table-container', 'children'),
+              [Input('upload-data', 'contents')])
+    def update_output(contents):
+        if contents is not None:
+            _, content_string = contents.split(',')
+            decoded = tl.base64.b64decode(content_string)
+            with open(path_file, 'w') as f:
+                f.write(decoded.decode("utf-8"))
+            uploaded_file_path = path_file
+            df = pd.read_csv(uploaded_file_path)
+            render = render_results(df)
+            return render
+        else:
+            return html.Div()
+
+
     return dash_app.server
 
+## Sección de renderizado de los componentes al cargar CSV
+def render_results(df):
+    # Create Data Table
+    table = tl.create_data_table(df)
 
-def create_data_table(df):
-    """Create Dash datatable from Pandas DataFrame."""
-    table = dash_table.DataTable(
-        id="database-table",
-        columns=[{"name": i, "id": i} for i in df.columns],
-        data=df.to_dict("records"),
-        sort_action="native",
-        sort_mode="native",
-        page_size=300,
+    # Create Layout
+    res = html.Div(
+        children=[
+            table
+        ],
+        className='render-container',
+        style={
+            'width': '100%',
+        }
     )
-    return table
+    return res
+
+### Ends shared section. Start individual section:

@@ -5,14 +5,15 @@ import pandas as pd
 
 path_file = os.path.join(os.path.dirname(__file__), '../../',  'data', 'file.csv')
 
-def create_dataframe():
-    """Create Pandas DataFrame from local CSV."""
-    df = pd.read_csv(path_file, parse_dates=["created"])
+# Variable global para almacenar la ruta del archivo cargado
+global uploaded_file_path
+uploaded_file_path = ''
 
-    """Data processing"""
-    df["created"] = df["created"].dt.date
-    df.drop(columns=["incident_zip"], inplace=True)
-    num_complaints = df["complaint_type"].value_counts()
-    to_remove = num_complaints[num_complaints <= 30].index
-    df.replace(to_remove, np.nan, inplace=True)
-    return df
+def create_dataframe_M():
+    """Create Pandas DataFrame from local CSV."""
+    global uploaded_file_path
+    if uploaded_file_path:
+        os.replace(uploaded_file_path, path_file)
+    df = pd.read_csv(path_file, header=None) ##Considerar si lleva o no encabezado
+
+    return df, path_file

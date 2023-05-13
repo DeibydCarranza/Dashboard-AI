@@ -39,5 +39,16 @@ def box_upload(path_file,app):
             with open(path_file, 'w') as f:
                 f.write(decoded.decode("utf-8"))
             uploaded_file_path = path_file
-            return 'Archivo cargado correctamente.'
     return component
+
+def create_data_table(df):
+    table = dash_table.DataTable(
+        id="database-table",
+        columns=[{"name": i, "id": i} for i in df.columns],
+        data=df.to_dict("records"),
+        sort_action="native",
+        sort_mode="native",
+        page_size=10,
+        style_table={'overflowX': 'scroll','overflowY': 'scroll'}
+    )
+    return table

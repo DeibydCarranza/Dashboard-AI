@@ -1,4 +1,3 @@
-"""Instantiate a Dash app."""
 import dash
 from dash import dash_table
 from dash import dcc
@@ -6,12 +5,11 @@ from dash import html
 import pandas as pd
 
 from .data import create_dataframe_A
-from ..tools import *
+from .. import tools as tl
 from .layout import html_layout
 from dash.dependencies import Input, Output, State
 
 def init_dashboard_apriori(server):
-    file_uploaded = False
     """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
         server=server,
@@ -28,37 +26,46 @@ def init_dashboard_apriori(server):
     # Custom HTML layout
     dash_app.index_string = html_layout
 
-    upload_component = box_upload(path_file,dash_app)
+    upload_component = tl.box_upload(path_file,dash_app)
 
     dash_app.layout = html.Div(children=[
         upload_component,
-        render_results(dash_app,df)
+        html.Div(id='table-container')
     ])
+
+    @dash_app.callback(Output('table-container', 'children'),
+              [Input('upload-data', 'contents')])
+    def update_output(contents):
+        if contents is not None:
+            _, content_string = contents.split(',')
+            decoded = tl.base64.b64decode(content_string)
+            with open(path_file, 'w') as f:
+                f.write(decoded.decode("utf-8"))
+            uploaded_file_path = path_file
+            df = pd.read_csv(uploaded_file_path)
+            render = render_results(df)
+            return render
+        else:
+            return html.Div()
+
 
     return dash_app.server
 
+## Sección de renderizado de los componentes al cargar CSV
+def render_results(df):
+    # Create Data Table
+    table = tl.create_data_table(df)
 
-def create_data_table(df):
-    table = dash_table.DataTable(
-        id="database-table",
-        columns=[{"name": i, "id": i} for i in df.columns],
-        data=df.to_dict("records"),
-        sort_action="native",
-        sort_mode="native",
-        page_size=10,
-        style_table={'overflowX': 'scroll','overflowY': 'scroll'}
-    )
-    return table
-
-def render_results(dash_app,df):
     # Create Layout
     res = html.Div(
         children=[
-            create_data_table(df)
+            table
         ],
-        id="dash-container",
+        className='render-container',
         style={
             'width': '100%',
         }
     )
     return res
+
+### Ends shared section. Start individual section:

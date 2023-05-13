@@ -2,9 +2,8 @@
 import os
 import numpy as np
 import pandas as pd
-import re
 
-path_file = os.path.join(os.path.dirname(__file__), '../../',  'data', 'temporal_Apriori.csv')
+path_file = os.path.join(os.path.dirname(__file__), '../../',  'data', 'file.csv')
 
 # Variable global para almacenar la ruta del archivo cargado
 global uploaded_file_path
