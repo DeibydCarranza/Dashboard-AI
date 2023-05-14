@@ -24,13 +24,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/barra.js') }}"></script>
 </head>
 <body class="{{template}}">
-  <main class="container">
-    {% include 'navbar.jinja2' %}
-    
-	  {% block content %}{% endblock %}
-    
-  </main>
-
+	{% block body %}{% endblock %}
 </body>
 
 </html>
