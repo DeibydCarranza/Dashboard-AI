@@ -4,6 +4,7 @@ html {
   width: 100%; 
   font-family: 'Lato', sans-serif;
   margin: 0;
+  color: var(--text-color);
 }
 
 .row .col {
@@ -19,10 +20,10 @@ html {
  
   --body-color: #E4E9F7;
   --sidebar-color: #FFF;
-  --primary-color: #0088ff;
+  --primary-color: #ff0000;
   --primary-color-light: #fff5f5;
   --toggle-color: #DDD;
-  --text-color: #383838;
+  --text-color: #3d3d3d;
   --tran-03: all 0.2s ease;
   --tran-03: all 0.3s ease;
   --tran-04: all 0.3s ease;
@@ -178,10 +179,6 @@ input, select, textarea {
 		box-sizing: inherit;
 	}
 
-	body {
-		background: #ffffff;
-	}
-
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
 			-moz-animation: none !important;
 			-webkit-animation: none !important;
@@ -196,7 +193,6 @@ input, select, textarea {
 /* Type */
 
 	body, input, select, textarea {
-		color: #585858;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 16pt;
 		font-weight: 300;
@@ -1895,9 +1891,11 @@ input, select, textarea {
 			text-rendering: auto;
 			line-height: 1;
 			text-transform: none !important;
-			font-family: 'Font Awesome 5 Free';
 			font-weight: 400;
 		}
+		.home-template .icon:before {
+			font-family: 'Font Awesome 5 Free';
+		  }
 
 		.icon > .label {
 			display: none;
@@ -1958,8 +1956,10 @@ input, select, textarea {
 
 	ul {
 		list-style: disc;
-		margin: 0 0 2em 0;
-		padding-left: 1em;
+		margin: 30px auto 0;
+		position: relative;
+        left: -5px;
+        padding-left: 0em;
 	}
 
 		ul li {
@@ -3498,6 +3498,9 @@ body.dark .content-container {
         text-align: center;
         max-width: 200px;
         margin: 30px auto 0;
+        position: relative;
+        left: -5px;
+        padding-left: 0em;
     }
 
     .menu-icon {
@@ -3524,6 +3527,9 @@ body.dark .content-container {
         .sidebar ul {
             max-width: 100%;
             margin: 60px auto 0;
+            position: relative;
+            left: -5px;
+            padding-left: 0em;
         }
         
         .sidebar ul li {
@@ -3534,6 +3540,9 @@ body.dark .content-container {
             margin: 0 6px 12px;
             color: #ffffff;
             background-color: #777;
+            position: relative;
+            left: -5px;
+            padding-left: 0em;
         }
 
     }

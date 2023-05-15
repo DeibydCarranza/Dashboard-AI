@@ -98,10 +98,6 @@ input, select, textarea {
 		box-sizing: inherit;
 	}
 
-	body {
-		background: #ffffff;
-	}
-
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
 			-moz-animation: none !important;
 			-webkit-animation: none !important;
@@ -116,7 +112,6 @@ input, select, textarea {
 /* Type */
 
 	body, input, select, textarea {
-		color: #585858;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 16pt;
 		font-weight: 300;
@@ -1815,9 +1810,11 @@ input, select, textarea {
 			text-rendering: auto;
 			line-height: 1;
 			text-transform: none !important;
-			font-family: 'Font Awesome 5 Free';
 			font-weight: 400;
 		}
+		.home-template .icon:before {
+			font-family: 'Font Awesome 5 Free';
+		  }
 
 		.icon > .label {
 			display: none;
@@ -1878,8 +1875,10 @@ input, select, textarea {
 
 	ul {
 		list-style: disc;
-		margin: 0 0 2em 0;
-		padding-left: 1em;
+		margin: 30px auto 0;
+		position: relative;
+        left: -5px;
+        padding-left: 0em;
 	}
 
 		ul li {
