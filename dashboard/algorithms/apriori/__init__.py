@@ -1,11 +1,11 @@
 import dash
-from dash import dash_table
 from dash import dcc
 from dash import html
 import pandas as pd
 
 from .data import create_dataframe_A
 from .. import tools as tl
+from . import method as met
 from .layout import html_layout
 from dash.dependencies import Input, Output, State
 
@@ -55,17 +55,26 @@ def init_dashboard_apriori(server):
 def render_results(df):
     # Create Data Table
     table = tl.create_data_table(df)
+    figure, res_df = met.method(df)
+
+    # Convertir el DataFrame en una lista de diccionarios
+    res_data = res_df.to_dict('records')
 
     # Create Layout
-    res = html.Div(
+    layout = html.Div(
         children=[
-            table
+            table,
+            dcc.Graph(id="graph-distribution", figure=figure),
+            html.Table(
+                [html.Tr([html.Th(col) for col in res_df.columns])] +
+                [html.Tr([html.Td(data[col]) for col in res_df.columns]) for data in res_data]
+            )
         ],
         className='render-container',
         style={
             'width': '100%',
         }
     )
-    return res
+    return layout
 
 ### Ends shared section. Start individual section:
