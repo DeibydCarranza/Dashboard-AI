@@ -10,7 +10,6 @@ from .layout import html_layout
 from dash.dependencies import Input, Output, State
 
 def init_dashboard_apriori(server):
-    """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
         server=server,
         routes_pathname_prefix="/apriori/",
@@ -26,15 +25,16 @@ def init_dashboard_apriori(server):
     # Custom HTML layout
     dash_app.index_string = html_layout
 
-    upload_component = tl.box_upload(path_file,dash_app)
-
+    upload_component = tl.box_upload(path_file, dash_app)
     dash_app.layout = html.Div(children=[
         upload_component,
         html.Div(id='table-container')
     ])
 
+    section_mod = mod_params(dash_app)
+
     @dash_app.callback(Output('table-container', 'children'),
-              [Input('upload-data', 'contents')])
+                       [Input('upload-data', 'contents')])
     def update_output(contents):
         if contents is not None:
             _, content_string = contents.split(',')
@@ -43,16 +43,15 @@ def init_dashboard_apriori(server):
                 f.write(decoded.decode("utf-8"))
             uploaded_file_path = path_file
             df = pd.read_csv(uploaded_file_path)
-            render = render_results(df)
+            render = render_results(df,section_mod)
             return render
         else:
             return html.Div()
 
-
     return dash_app.server
 
-## Sección de renderizado de los componentes al cargar CSV
-def render_results(df):
+
+def render_results(df, section_mod):
     # Create Data Table
     table = tl.create_data_table(df)
     figure, res_df = met.method(df)
@@ -65,6 +64,7 @@ def render_results(df):
         children=[
             table,
             dcc.Graph(id="graph-distribution", figure=figure),
+            section_mod,
             html.Table(
                 [html.Tr([html.Th(col) for col in res_df.columns])] +
                 [html.Tr([html.Td(data[col]) for col in res_df.columns]) for data in res_data]
@@ -77,4 +77,30 @@ def render_results(df):
     )
     return layout
 
-### Ends shared section. Start individual section:
+
+def mod_params(app):
+    section_mod = html.Div([
+        dcc.Slider(
+            id="slider-circular", min=0, max=20,
+            marks={i: str(i) for i in range(21)},
+            value=3
+        ),
+        dcc.Input(
+            id="input-circular", type="number", min=0, max=20, value=3
+        )],
+        className='slider-input-container'
+        )
+
+    @app.callback(
+        [Output("input-circular", "value"),
+         Output("slider-circular", "value")],
+        [Input("input-circular", "value"),
+         Input("slider-circular", "value")]
+    )
+    def callback(input_value, slider_value):
+        ctx = dash.callback_context
+        trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        value = input_value if trigger_id == "input-circular" else slider_value
+        return value, value
+
+    return section_mod

@@ -1,7 +1,10 @@
 import pandas as pd
-import matplotlib.pyplot as plt
+import dash
+from dash import dcc
+from dash import html
 import plotly.graph_objects as go
 from apyori import apriori
+from dash.dependencies import Input, Output, State
 
 
 def method(transac_data):
@@ -62,3 +65,5 @@ def application(dataSet, support, confidence, lift):
     
     df_resultados = pd.DataFrame(resultados)
     return df_resultados
+
+
