@@ -52,3 +52,38 @@ def create_data_table(df):
         style_table={'overflowX': 'scroll','overflowY': 'scroll'}
     )
     return table
+
+# Componente dual Slider-Input. Los sufijos ayudan a no duplicarlos
+def mod_params_slide_input(app, mini, maxi, suffix=""):
+    section_mod = html.Div(children=(
+            dcc.Slider(
+                id="slider-circular" + suffix,
+                min=mini,
+                max=maxi,
+                marks={i: str(i) for i in range(maxi + 1)},
+                value=(maxi // 3)
+            ),
+            dcc.Input(
+                id="input-circular" + suffix,
+                type="number",
+                min=mini,
+                max=maxi,
+                value=(maxi // 3)
+            )
+        ),
+        className='slider-input-container'
+    )
+
+    @app.callback(
+        [Output("input-circular" + suffix, "value"),
+         Output("slider-circular" + suffix, "value")],
+        [Input("input-circular" + suffix, "value"),
+         Input("slider-circular" + suffix, "value")]
+    )
+    def update_output(input_value, slider_value):
+        ctx = dash.callback_context
+        trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        value = input_value if trigger_id == "input-circular" + suffix else slider_value
+        return value, value
+
+    return section_mod

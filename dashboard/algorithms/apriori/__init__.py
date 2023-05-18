@@ -17,6 +17,7 @@ def init_dashboard_apriori(server):
             "/static/dist/css/styles.css",
             "https://fonts.googleapis.com/css?family=Lato",
         ],
+        suppress_callback_exceptions=True
     )
 
     # Load DataFrame
@@ -31,7 +32,8 @@ def init_dashboard_apriori(server):
         html.Div(id='table-container')
     ])
 
-    section_mod = mod_params(dash_app)
+    #Renderizando el bloque Slider/Input
+    section_params = block_params(dash_app)
 
     @dash_app.callback(Output('table-container', 'children'),
                        [Input('upload-data', 'contents')])
@@ -43,7 +45,7 @@ def init_dashboard_apriori(server):
                 f.write(decoded.decode("utf-8"))
             uploaded_file_path = path_file
             df = pd.read_csv(uploaded_file_path)
-            render = render_results(df,section_mod)
+            render = render_results(df,section_params)
             return render
         else:
             return html.Div()
@@ -51,7 +53,7 @@ def init_dashboard_apriori(server):
     return dash_app.server
 
 
-def render_results(df, section_mod):
+def render_results(df,section_params):
     # Create Data Table
     table = tl.create_data_table(df)
     figure, res_df = met.method(df)
@@ -59,12 +61,13 @@ def render_results(df, section_mod):
     # Convertir el DataFrame en una lista de diccionarios
     res_data = res_df.to_dict('records')
 
+
     # Create Layout
     layout = html.Div(
         children=[
             table,
             dcc.Graph(id="graph-distribution", figure=figure),
-            section_mod,
+            section_params,
             html.Table(
                 [html.Tr([html.Th(col) for col in res_df.columns])] +
                 [html.Tr([html.Td(data[col]) for col in res_df.columns]) for data in res_data]
@@ -77,30 +80,19 @@ def render_results(df, section_mod):
     )
     return layout
 
+#Bloque de slider/Input, se considera sufijos para identificarlos
+def block_params(dash_app):
+    section_mod1 = tl.mod_params_slide_input(dash_app,0,4,"-1")
+    section_mod2 = tl.mod_params_slide_input(dash_app,0,10,"-2")
+    section_mod3 = tl.mod_params_slide_input(dash_app,0,10,"-3")
 
-def mod_params(app):
-    section_mod = html.Div([
-        dcc.Slider(
-            id="slider-circular", min=0, max=20,
-            marks={i: str(i) for i in range(21)},
-            value=3
-        ),
-        dcc.Input(
-            id="input-circular", type="number", min=0, max=20, value=3
-        )],
-        className='slider-input-container'
-        )
-
-    @app.callback(
-        [Output("input-circular", "value"),
-         Output("slider-circular", "value")],
-        [Input("input-circular", "value"),
-         Input("slider-circular", "value")]
+    layout = html.Div(children=[
+        section_mod1,
+        section_mod2,
+        section_mod3
+    ],
+    className='block-params-container'
     )
-    def callback(input_value, slider_value):
-        ctx = dash.callback_context
-        trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        value = input_value if trigger_id == "input-circular" else slider_value
-        return value, value
+    return  layout
 
-    return section_mod
+    
