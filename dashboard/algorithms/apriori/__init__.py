@@ -53,7 +53,7 @@ def init_dashboard_apriori(server):
     return dash_app.server
 
 
-def render_results(df,section_params):
+def render_results(df, section_params):
     # Create Data Table
     table = tl.create_data_table(df)
     figure, res_df = met.method(df)
@@ -61,6 +61,9 @@ def render_results(df,section_params):
     # Convertir el DataFrame en una lista de diccionarios
     res_data = res_df.to_dict('records')
 
+    # Crear las tarjetas interactivas
+    cards = [generate_card(pd.DataFrame([data])) for data in res_data]
+    cards_container = html.Div(cards, className='cards-container')
 
     # Create Layout
     layout = html.Div(
@@ -68,10 +71,7 @@ def render_results(df,section_params):
             table,
             dcc.Graph(id="graph-distribution", figure=figure),
             section_params,
-            html.Table(
-                [html.Tr([html.Th(col) for col in res_df.columns])] +
-                [html.Tr([html.Td(data[col]) for col in res_df.columns]) for data in res_data]
-            )
+            cards_container 
         ],
         className='render-container',
         style={
@@ -96,3 +96,14 @@ def block_params(dash_app):
     return  layout
 
     
+
+def generate_card(data):
+    return html.Details([
+        html.Summary('Ver detalles'),
+        html.Table(
+            [html.Tr([html.Th(col) for col in data.columns])] +
+            [html.Tr([html.Td(data[col]) for col in data.columns])],
+            style={'margin-bottom': '10px'}
+        )
+    ])
+

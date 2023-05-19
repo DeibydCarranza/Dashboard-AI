@@ -9,7 +9,7 @@ from dash.dependencies import Input, Output, State
 
 def method(transac_data):
     graph, dataSet = process_data(transac_data)
-    res = application(dataSet,0.0045,0.2,3)
+    res = application(dataSet,0.01,0.3,2)
     return graph, res
 
 
@@ -57,7 +57,9 @@ def application(dataSet, support, confidence, lift):
         Emparejar = item[0]
         items = [x for x in Emparejar]
         resultados.append({
-            'Regla': str(item[0]),
+            'Regla': str(item[0])[10:-1],
+            'Antecedente': str(item[2][0][0])[10:-1],
+            'Consecuente': str(item[2][0][1])[10:-1],
             'Soporte': str(item[1]),
             'Confianza': str(item[2][0][2]),
             'Elevación': str(item[2][0][3])
