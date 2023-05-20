@@ -9,7 +9,6 @@ from .. import tools as tl
 from . import method as met
 from .layout import html_layout
 
-from IPython.display import display
 
 def init_dashboard_apriori(server):
     dash_app = dash.Dash(
@@ -34,8 +33,22 @@ def init_dashboard_apriori(server):
         html.Div(id='table-container')
     ])
 
+    # Create Data Table y algoritmo funcional
+    table = tl.create_data_table(df)
+    figure, res_df = met.method(df)
+
+    # Convertir el DataFrame en una lista de diccionarios
+    res_data = res_df.to_dict('records')
+    res_data = [data for data in res_data if isinstance(data, dict)]
+
+    # Crear las tarjetas interactivas
+    cards = [generate_card(data, index,dash_app) for index, data in enumerate(res_data)]
+    cards_container = html.Div(cards, className='cards-container')
+
     #Renderizando el bloque Slider/Input
     section_params = block_params(dash_app)
+
+    #Callback ejecutado para cargar un archivo
     @dash_app.callback(Output('table-container', 'children'),
                        [Input('upload-data', 'contents')])
     def update_output(contents):
@@ -46,30 +59,16 @@ def init_dashboard_apriori(server):
                 f.write(decoded.decode("utf-8"))
             uploaded_file_path = path_file
             df = pd.read_csv(uploaded_file_path)
-            render = render_results(df, section_params, dash_app)
+            render = render_results(table,figure,section_params,cards_container)
             return render
         else:
             return html.Div()
 
     return dash_app.server
 
-
-def render_results(df, section_params, app):
+#Renderizado de los componentes al cargar un archivo
+def render_results(table,figure,section_params,cards_container):
     print("\t\tEntrada a render")
-    # Create Data Table
-    table = tl.create_data_table(df)
-    figure, res_df = met.method(df)
-
-    # Convertir el DataFrame en una lista de diccionarios
-    res_data = res_df.to_dict('records')
-
-    # Filtrar elementos que no son diccionarios
-    res_data = [data for data in res_data if isinstance(data, dict)]
-
-    # Crear las tarjetas interactivas
-    cards = [generate_card(data, index,app) for index, data in enumerate(res_data)]
-    cards_container = html.Div(cards, className='cards-container')
-
     # Create Layout
     layout = html.Div(
         children=[
@@ -100,20 +99,7 @@ def block_params(dash_app):
     )
     return layout
 
-
-
-# def generate_card(data):
-#     return html.Details([
-#         html.Summary('Ver detalles'),
-#         html.Table(
-#             [html.Tr([html.Th(col) for col in data.columns])] +
-#             [html.Tr([html.Td(data[col]) for col in data.columns])],
-#             style={'margin-bottom': '10px'}
-#         )
-#     ])
-
-
-
+# Generación de los componentes tipo tabla donde se muestran las reglas
 def generate_card(data, index, app):
     if not data:
         return None
@@ -130,19 +116,19 @@ def generate_card(data, index, app):
         n_clicks=0,
         style={'margin-left': '10px'}
     )
-
+    
+    @app.callback(
+        Output(f"table-{index}", 'style'),
+        Input(id_str, 'n_clicks'),
+        State(f"table-{index}", 'style')
+    )
     def toggle_table_content(n_clicks, style):
         if n_clicks % 2 == 1:
             style['display'] = 'block'
         else:
             style['display'] = 'none'
         return style
-
-    app.callback(
-        Output(f"table-{index}", 'style'),
-        Input(id_str, 'n_clicks'),
-        State(f"table-{index}", 'style')
-    )(toggle_table_content)
-
+    
     card = html.Div([button, table_content], className='card')
     return card
+
