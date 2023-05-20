@@ -2,12 +2,14 @@ import dash
 from dash import dcc
 from dash import html
 import pandas as pd
+from dash.dependencies import Input, Output, State
 
 from .data import create_dataframe_A
 from .. import tools as tl
 from . import method as met
 from .layout import html_layout
-from dash.dependencies import Input, Output, State
+
+from IPython.display import display
 
 def init_dashboard_apriori(server):
     dash_app = dash.Dash(
@@ -34,7 +36,6 @@ def init_dashboard_apriori(server):
 
     #Renderizando el bloque Slider/Input
     section_params = block_params(dash_app)
-
     @dash_app.callback(Output('table-container', 'children'),
                        [Input('upload-data', 'contents')])
     def update_output(contents):
@@ -45,7 +46,7 @@ def init_dashboard_apriori(server):
                 f.write(decoded.decode("utf-8"))
             uploaded_file_path = path_file
             df = pd.read_csv(uploaded_file_path)
-            render = render_results(df,section_params)
+            render = render_results(df, section_params, dash_app)
             return render
         else:
             return html.Div()
@@ -53,7 +54,8 @@ def init_dashboard_apriori(server):
     return dash_app.server
 
 
-def render_results(df, section_params):
+def render_results(df, section_params, app):
+    print("\t\tEntrada a render")
     # Create Data Table
     table = tl.create_data_table(df)
     figure, res_df = met.method(df)
@@ -61,8 +63,11 @@ def render_results(df, section_params):
     # Convertir el DataFrame en una lista de diccionarios
     res_data = res_df.to_dict('records')
 
+    # Filtrar elementos que no son diccionarios
+    res_data = [data for data in res_data if isinstance(data, dict)]
+
     # Crear las tarjetas interactivas
-    cards = [generate_card(pd.DataFrame([data])) for data in res_data]
+    cards = [generate_card(data, index,app) for index, data in enumerate(res_data)]
     cards_container = html.Div(cards, className='cards-container')
 
     # Create Layout
@@ -71,7 +76,7 @@ def render_results(df, section_params):
             table,
             dcc.Graph(id="graph-distribution", figure=figure),
             section_params,
-            cards_container 
+            cards_container
         ],
         className='render-container',
         style={
@@ -80,11 +85,11 @@ def render_results(df, section_params):
     )
     return layout
 
-#Bloque de slider/Input, se considera sufijos para identificarlos
+# Bloque de slider/Input, se considera sufijos para identificarlos
 def block_params(dash_app):
-    section_mod1 = tl.mod_params_slide_input(dash_app,0,4,"-1")
-    section_mod2 = tl.mod_params_slide_input(dash_app,0,10,"-2")
-    section_mod3 = tl.mod_params_slide_input(dash_app,0,10,"-3")
+    section_mod1 = tl.mod_params_slide_input(dash_app, 0, 4, "-1")
+    section_mod2 = tl.mod_params_slide_input(dash_app, 0, 10, "-2")
+    section_mod3 = tl.mod_params_slide_input(dash_app, 0, 10, "-3")
 
     layout = html.Div(children=[
         section_mod1,
@@ -93,17 +98,51 @@ def block_params(dash_app):
     ],
     className='block-params-container'
     )
-    return  layout
+    return layout
 
-    
 
-def generate_card(data):
-    return html.Details([
-        html.Summary('Ver detalles'),
-        html.Table(
-            [html.Tr([html.Th(col) for col in data.columns])] +
-            [html.Tr([html.Td(data[col]) for col in data.columns])],
-            style={'margin-bottom': '10px'}
-        )
-    ])
 
+# def generate_card(data):
+#     return html.Details([
+#         html.Summary('Ver detalles'),
+#         html.Table(
+#             [html.Tr([html.Th(col) for col in data.columns])] +
+#             [html.Tr([html.Td(data[col]) for col in data.columns])],
+#             style={'margin-bottom': '10px'}
+#         )
+#     ])
+
+
+
+def generate_card(data, index, app):
+    if not data:
+        return None
+
+    id_str = f"toggle-button-{index}"
+    table_content = html.Table(
+        [html.Tr([html.Th(col), html.Td(data[col])]) for col in data.keys()],
+        id=f"table-{index}",
+        style={'display': 'none'}
+    )
+    button = html.Button(
+        id=id_str,
+        children='Ver detalles',
+        n_clicks=0,
+        style={'margin-left': '10px'}
+    )
+
+    def toggle_table_content(n_clicks, style):
+        if n_clicks % 2 == 1:
+            style['display'] = 'block'
+        else:
+            style['display'] = 'none'
+        return style
+
+    app.callback(
+        Output(f"table-{index}", 'style'),
+        Input(id_str, 'n_clicks'),
+        State(f"table-{index}", 'style')
+    )(toggle_table_content)
+
+    card = html.Div([button, table_content], className='card')
+    return card
