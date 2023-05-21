@@ -1,71 +1,34 @@
 import dash
-from dash import dash_table
-from dash import dcc
-from dash import html
-import pandas as pd
-
-from .data import create_dataframe_C
-from .. import tools as tl
-from .layout import html_layout
-from dash.dependencies import Input, Output, State
-
+from dash import dash_table,dcc,html,Input, Output, State
+from . import layout
+from .. import tool as tl
+#Create a Plotly Dash dashboard
 def init_dashboard_cluster(server):
-    """Create a Plotly Dash dashboard."""
+    """ Falk instance """
     dash_app = dash.Dash(
-        server=server,
-        routes_pathname_prefix="/clustering/",
+        server=server, # server is a flask instance
+        routes_pathname_prefix="/cluster/",
         external_stylesheets=[
             "/static/dist/css/styles.css",
             "https://fonts.googleapis.com/css?family=Lato",
         ],
     )
+    """ Plugins """
+    dash_app.index_string = layout.html_layout
+    upload_component = tl.box_upload()
 
-    # Load DataFrame
-    df, path_file = create_dataframe_C()
-
-    # Custom HTML layout
-    dash_app.index_string = html_layout
-
-    upload_component = tl.box_upload(path_file,dash_app)
-
+    """ Body """
     dash_app.layout = html.Div(children=[
-        upload_component,
-        html.Div(id='table-container')
+        upload_component # Just import html structure
     ])
-
-    @dash_app.callback(Output('table-container', 'children'),
-              [Input('upload-data', 'contents')])
-    def update_output(contents):
-        if contents is not None:
-            _, content_string = contents.split(',')
-            decoded = tl.base64.b64decode(content_string)
-            with open(path_file, 'w') as f:
-                f.write(decoded.decode("utf-8"))
-            uploaded_file_path = path_file
-            df = pd.read_csv(uploaded_file_path)
-            render = render_results(df)
-            return render
-        else:
-            return html.Div()
-
-
+    """ Callbacks """
+    @dash_app.callback(Output('output-data-upload', 'children'),
+                Input('upload-data', 'contents'),
+                State('upload-data', 'filename'))
+    def update_output(list_of_contents, list_of_names):
+        if list_of_contents is not None:
+            children = [
+                tl.parse_contents(list_of_contents, list_of_names)]
+            return children
+    
     return dash_app.server
-
-## Sección de renderizado de los componentes al cargar CSV
-def render_results(df):
-    # Create Data Table
-    table = tl.create_data_table(df)
-
-    # Create Layout
-    res = html.Div(
-        children=[
-            table
-        ],
-        className='render-container',
-        style={
-            'width': '100%',
-        }
-    )
-    return res
-
-### Ends shared section. Start individual section:
