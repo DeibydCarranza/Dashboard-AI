@@ -1,5 +1,5 @@
 import dash
-from dash import dash_table,dcc,html
+from dash import dash_table,dcc,html,Output,Input
 import base64
 import pandas as pd
 import os

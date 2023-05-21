@@ -4,6 +4,10 @@ from .. import tool as tl
 from . import method as met
 from . import layout
 import pandas as pd
+import os
+
+global path_file_apriori
+path_file_apriori = os.path.join(os.path.dirname(__file__), '../../',  'data', 'file.csv')
 
 def init_dashboard_apriori(server):
     """ Falk instance """
@@ -37,9 +41,9 @@ def init_dashboard_apriori(server):
         if contents is not None:
             _, content_string = contents.split(',')
             decoded = tl.base64.b64decode(content_string)
-            with open(path_file, 'w') as f:
+            with open(path_file_apriori, 'w') as f:
                 f.write(decoded.decode("utf-8"))
-            uploaded_file_path = path_file
+            uploaded_file_path = path_file_apriori
             df = pd.read_csv(uploaded_file_path)
             render = render_results(df,section_params,dash_app)
             return render
