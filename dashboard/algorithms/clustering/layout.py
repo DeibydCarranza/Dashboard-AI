@@ -18,7 +18,7 @@ html_layout = """
             <header class="header-top">
                 <div class="nav-wrapper">
                     <a href="/">
-                        <h1>Clustering</h1>
+                        <h1>Métricas de distancia</h1>
                     </a>
                 </div>
             </header>         
