@@ -56,13 +56,16 @@ def application(dataSet, support, confidence, lift):
     for item in ResultadosC1:
         Emparejar = item[0]
         items = [x for x in Emparejar]
+        regla = ', '.join(items).strip('{}')
+        antecedente = ', '.join(item[2][0][0]).strip('{}')
+        consecuente = ', '.join(item[2][0][1]).strip('{}')
         resultados.append({
-            'Regla': str(item[0])[10:-1],
-            'Antecedente': str(item[2][0][0])[10:-1],
-            'Consecuente': str(item[2][0][1])[10:-1],
-            'Soporte': str(item[1]),
-            'Confianza': str(item[2][0][2]),
-            'Elevación': str(item[2][0][3])
+            'Regla': regla,
+            'Antecedente': antecedente,
+            'Consecuente': consecuente,
+            'Soporte': "{:.3f}%".format(item[1] * 100),
+            'Confianza': "{:.3f}%".format(item[2][0][2] * 100),
+            'Elevación': "{:.3f}".format(item[2][0][3])
         })
     
     df_resultados = pd.DataFrame(resultados)
