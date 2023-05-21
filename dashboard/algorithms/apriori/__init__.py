@@ -126,17 +126,18 @@ def generate_card(data, index):
         n_clicks=0,
         style={'margin-left': '10px'}
     )
-    description_row = html.Tr([html.Td(
-                html.Table(
-                    html.Tr(html.Td(description)),
-                    className="nested-table"
-                )
-            )],
-        id=f"description-row-{index}",
-        className="single-column-table"
-    )
+    description_row = html.Tr([
+        html.Td(
+            html.Table(
+                html.Tr(html.Td(description, colSpan='7')),
+                className="nested-table"
+            ),
+            className="single-column-table",
+            colSpan='7'
+        )
+    ], id=f"description-row-{index}")
 
     return [html.Tr([
                 html.Td(str(value)) for value in data.values()
-            ] + [html.Td(button)])
-            , description_row]
+            ] + [html.Td(button)]),
+            description_row]
