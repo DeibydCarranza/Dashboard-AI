@@ -2,7 +2,6 @@ import dash
 from dash import dash_table,dcc,html,Input, Output, State
 from . import layout
 from .. import tool as tl
-
 #Create a Plotly Dash dashboard
 def init_dashboard_metrics(server):
     """ Falk instance """
