@@ -1,71 +1,66 @@
 import dash
-from dash import dash_table
-from dash import dcc
-from dash import html
+from dash import dash_table,dcc,html,Input, Output, State
 import pandas as pd
+from . import layout
+from . import data
+from .. import tool as tl
 
-from .data import create_dataframe_M
-from .. import tools as tl
-from .layout import html_layout
-from dash.dependencies import Input, Output, State
-
+#Create a Plotly Dash dashboard
 def init_dashboard_metrics(server):
-    """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
-        server=server,
+        server=server, # server is a flask instance
         routes_pathname_prefix="/metricas/",
         external_stylesheets=[
             "/static/dist/css/styles.css",
             "https://fonts.googleapis.com/css?family=Lato",
         ],
     )
-
-    # Load DataFrame
-    df, path_file = create_dataframe_M()
-
     # Custom HTML layout
-    dash_app.index_string = html_layout
+    dash_app.index_string = layout.html_layout
+    # Load DataFrame & path
+    df, path_file = data.create_dataframe_M()
+    upload_component = tl.box_upload()
 
-    upload_component = tl.box_upload(path_file,dash_app)
 
+    # define body of page
     dash_app.layout = html.Div(children=[
-        upload_component,
-        html.Div(id='table-container')
+        upload_component
     ])
 
-    @dash_app.callback(Output('table-container', 'children'),
-              [Input('upload-data', 'contents')])
-    def update_output(contents):
-        if contents is not None:
-            _, content_string = contents.split(',')
-            decoded = tl.base64.b64decode(content_string)
-            with open(path_file, 'w') as f:
-                f.write(decoded.decode("utf-8"))
-            uploaded_file_path = path_file
-            df = pd.read_csv(uploaded_file_path)
-            render = render_results(df)
-            return render
-        else:
-            return html.Div()
+    def parse_contents(contents, filename):
+        if ',' not in contents:
+            return html.Div([
+                'Contenido incorrecto'
+            ])
+        content_type, content_string = contents.split(',')
+        decoded = base64.b64decode(content_string)
+        global uploaded_file_path
+        try:
+            if 'csv' in filename:
+                # Assume that the user uploaded a CSV file
+                with open(path_file, 'w') as f:
+                    f.write(decoded.decode("utf-8"))
+                uploaded_file_path = path_file
+        except Exception as e:
+            print(e)
+            return html.Div([
+                'Archivo erroneo, solo archivos .csv'
+            ])
 
-
+        return html.Div([
+            dash_table.DataTable(
+            df.to_dict('records'),
+            [{'name': i, 'id': i} for i in df.columns]
+        )
+        ])
+    @dash_app.callback(Output('output-data-upload', 'children'),
+                Input('upload-data', 'contents'),
+                State('upload-data', 'filename'))
+    def update_output(list_of_contents, list_of_names):
+        if list_of_contents is not None:
+            children = [
+                parse_contents(c, n) for c, n in
+                zip(list_of_contents, list_of_names)]
+            return children
+    
     return dash_app.server
-
-## Sección de renderizado de los componentes al cargar CSV
-def render_results(df):
-    # Create Data Table
-    table = tl.create_data_table(df)
-
-    # Create Layout
-    res = html.Div(
-        children=[
-            table
-        ],
-        className='render-container',
-        style={
-            'width': '100%',
-        }
-    )
-    return res
-
-### Ends shared section. Start individual section:
