@@ -36,6 +36,7 @@ html_layout = """
                 {%config%}
                 {%scripts%}
                 <script type="text/javascript" src="../../static/js/barra.js"></script>
+                <script type="text/javascript" src="../../static/js/boton.js"></script>                
                 {%renderer%}
             </footer>
         </body>
