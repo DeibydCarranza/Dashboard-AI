@@ -64,11 +64,17 @@ def render_results(df,section_params,dash_app):
     res_data = res_df.to_dict('records')
     res_data = [data for data in res_data if isinstance(data, dict)]
 
-    # Generar las tarjetas de datos y agregarlas a la lista de tarjetas
-    cards = [html.Table([html.Tr([html.Th(col) for col in res_data[0].keys()])],
-            id="titulos"
-        )] + [generate_card(data, index) for index, data in enumerate(res_data)]
-    cards_container = html.Div(cards, className='cards-container')
+    # Generar los títulos de la tabla y sus filas
+    title_row = html.Tr([html.Th(col) for col in res_data[0].keys()] + [html.Th("Acciones")])
+    titles = html.Thead(title_row)
+    card_rows = []
+    for index, data in enumerate(res_data):
+        card_rows.extend(generate_card(data, index))
+
+    # Generar el cuerpo de la tabla con las filas de tarjetas
+    card_body = html.Tbody(card_rows)
+    table_rules = html.Table([titles, card_body], id="titulos")
+    cards_container = html.Div(table_rules, className='cards-container')
 
     # Create Layout
     layout = html.Div(
@@ -106,18 +112,11 @@ def generate_card(data, index):
         return None
 
     id_str = f"toggle-button-{index}"
-    table_content = html.Table([
-            html.Tr([html.Td(str(value)) for value in data.values()])
-        ],
-        id=f"table-{index}",
-        style={'width': '100%'}
-    )
-
-    desciption = html.Div(
-        html.P('Hola amigos',
-            id=f"descript-{index}",
-            style={'display': 'none'},
-            className="desciption_rule"),
+    description = html.Div(
+        html.P('Holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ',
+               id=f"descript-{index}",
+               style={'display': 'none'},
+               className="description_rule"),
     )
     button = html.Button(
         id=id_str,
@@ -127,6 +126,17 @@ def generate_card(data, index):
         n_clicks=0,
         style={'margin-left': '10px'}
     )
-    
-    card = html.Div([button, table_content, desciption], className='card')
-    return card
+    description_row = html.Tr([html.Td(
+                html.Table(
+                    html.Tr(html.Td(description)),
+                    className="nested-table"
+                )
+            )],
+        id=f"description-row-{index}",
+        className="single-column-table"
+    )
+
+    return [html.Tr([
+                html.Td(str(value)) for value in data.values()
+            ] + [html.Td(button)])
+            , description_row]

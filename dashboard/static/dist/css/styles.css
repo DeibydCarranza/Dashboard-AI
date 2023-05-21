@@ -40,6 +40,25 @@ body{
   background-color: var(--primary-color);
   color: #fff;
 }
+.single-column-table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+.single-column-table td {
+    display: inline-block;
+    width: 100%;
+  }
+.nested-table{
+    table-layout: fixed;
+    width: 100%;
+    background-color: transparent !important;
+    border: solid 1px transparent !important;
+}
+.nested-table tr{
+    background-color: transparent !important;
+    border: solid 1px transparent !important;
+}
 .header-top{
   position: relative;
   width: 100%;
