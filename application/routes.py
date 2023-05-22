@@ -1,14 +1,25 @@
-from application import app
+#from application import app
+from flask import current_app as app
 from flask import render_template
 import pandas as pd
 import json
 import plotly
 import plotly.express as px
-
+import os
 
 @app.route('/')
-def index():
+def index():    
+
     return render_template('index.jinja2')
+
+@app.route('/apriori/')
+def apriori():
+    # with open(os.path.join(os.path.dirname(__file__), '../../../', 'algorithms', 'layout2.jinja2'), 'r') as file:
+    #     layout_A = file.read()
+    with open(os.path.join(os.path.dirname(__file__), '../../' 'apriori/', 'layout2.jinja2'), 'r') as file: 
+        layout_A = file.read()  
+    return render_template(layout_A)
+    #return render_template('index.jinja2')
 
 @app.route('/chart1')
 def chart1():

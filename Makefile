@@ -36,7 +36,7 @@ $(VIRTUAL_ENVIRONMENT):
 
 .PHONY: run
 run: env
-	$(LOCAL_PYTHON) -m run.py
+	$(LOCAL_PYTHON) -m run
 
 .PHONY: install
 install:
