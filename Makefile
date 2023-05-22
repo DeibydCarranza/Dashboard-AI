@@ -1,4 +1,4 @@
-PROJECT_NAME := $(shell basename $CURDIR)
+PROJECT_NAME := $(shell basename $(CURDIR))
 VIRTUAL_ENVIRONMENT := $(CURDIR)/.venv
 LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 
@@ -41,64 +41,40 @@ run: env
 .PHONY: install
 install:
 	if [ ! -d "./.venv" ]; then python3 -m venv $(VIRTUAL_ENVIRONMENT); fi
-	$(shell . .venv/bin/activate)
+	$(shell . $(VIRTUAL_ENVIRONMENT)/bin/activate)
 	$(LOCAL_PYTHON) -m pip install --upgrade pip setuptools wheel
 	$(LOCAL_PYTHON) -m pip install -r requirements.txt
-	
-
-
 
 .PHONY: deploy
-deploy:
-	make clean
-	make install
-	make run
-
-
-.PHONY: test
-test: env
-	$(LOCAL_PYTHON) -m \
-		coverage run -m pytest -v \
-		--disable-pytest-warnings \
-		&& coverage html --title='Coverage Report' -d .reports \
-		&& open .reports/index.html
+deploy: clean install run
 
 
 .PHONY: update
-update:
-	if [ ! -d "./.venv" ]; then python3 -m venv $(VIRTUAL_ENVIRONMENT); fi
-	$(LOCAL_PYTHON) -m pip install --upgrade pip setuptools wheel
-	poetry update
-	poetry export -f requirements.txt --output requirements.txt --without-hashes
+update: env
+	$(LOCAL_PYTHON) -m pip install poetry
+	$(LOCAL_PYTHON) -m poetry update
+	$(LOCAL_PYTHON) -m poetry export --format=requirements.txt --output=requirements.txt
 
 
 .PHONY: format
 format: env
-	isort --multi-line=3 .
-	black .
+	$(LOCAL_PYTHON) -m pip install black
+	$(LOCAL_PYTHON) -m black .
 
 
 .PHONY: lint
 lint: env
-	$(LOCAL_PYTHON) -m flake8 . --count \
-			--select=E9,F63,F7,F82 \
-			--exclude .git,.github,__pycache__,.pytest_cache,.venv,logs,creds,.venv,docs,logs,.reports \
-			--show-source \
-			--statistics
+	$(LOCAL_PYTHON) -m pip install flake8
+	$(LOCAL_PYTHON) -m flake8 .
 
 
 .PHONY: clean
 clean:
-	find . -name '*.pyc' -delete
-	find . -name '__pycache__' -delete
-	find . -name 'poetry.lock' -delete
-	find . -name 'Pipefile.lock' -delete
-	find . -name '*.log' -delete
-	find . -name '.coverage' -delete
-	find . -wholename 'logs/*.json' -delete
-	find . -wholename '*/.pytest_cache' -delete
-	find . -wholename '**/.pytest_cache' -delete
-	find . -wholename './logs/*.json' -delete
-	find . -wholename '.webassets-cache/*' -delete
-	find . -wholename './logs' -delete
-	find . -wholename './.reports' -delete
+	@echo "Cleaning up..."
+	find . -type f -name "*.pyc" -delete
+	rm -rf .pytest_cache .coverage .pytest_cache coverage.xml htmlcov
+
+
+.PHONY: help
+help:
+	@echo "$$HELP"
