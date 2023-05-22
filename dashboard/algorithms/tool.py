@@ -7,33 +7,6 @@ import os
 global path_file
 path_file = os.path.join(os.path.dirname(__file__), '../',  'data', 'file.csv')
 
-
-""" Generate update component (just html) """
-def box_upload():
-    component = html.Div([
-        dcc.Upload(
-            id='upload-data',
-            children=html.Div([
-                'Carga de archivo ',
-                html.A('Select CSV File')
-            ]),
-            style={
-                'margin'
-                'height': '60px',
-                'lineHeight': '60px',
-                'borderWidth': '2px',
-                'borderStyle': 'dashed',
-                'borderRadius': '5px',
-                'textAlign': 'center',
-                'margin': '50px 10px'
-            },
-            # Permitir cargar múltiples archivos
-            multiple=False
-        ),
-        html.Div(id='output-data-upload'),
-    ])
-    return component
-
 """ Create and return dash_table """
 def create_data_table(df):
     table = dash_table.DataTable(
@@ -54,17 +27,13 @@ def parse_contents(contents, filename):
     global path_file
     try:
         if 'csv' in filename:
-            print("------->" + filename)
             # writin on file
-            write_on_file(decoded)
-            print("---->")
+            write_on_file(decoded)        
             print(path_file)
             # generating dataframe
             df = pd.read_csv(path_file, header=None) ##Considerar si lleva o no encabezado
-            print("-->")
             # Generate html component
             render = render_results(df)
-            print("->")
     except Exception as e:
         print(e)
         return html.Div([
@@ -93,6 +62,5 @@ def render_results(df):
 """Create Pandas DataFrame from local CSV."""
 def write_on_file(decoded):
     global path_file
-    if not path_file: # solo si path_file no esta llena
-        with open(path_file, 'w') as f:
-                f.write(decoded.decode("utf-8"))
+    with open(path_file, 'w') as f:
+            f.write(decoded.decode("utf-8"))
