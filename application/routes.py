@@ -8,7 +8,7 @@ import plotly.express as px
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.jinja2')
 
 @app.route('/chart1')
 def chart1():
