@@ -7,10 +7,10 @@ from apyori import apriori
 from dash.dependencies import Input, Output, State
 
 
-def method(transac_data):
-    graph, dataSet = process_data(transac_data)
-    res = application(dataSet,0.01,0.3,2)
-    return graph, res
+def methodGraph(transac_data):
+    graph = process_data(transac_data)
+    #res = application(support,confidence,lift)
+    return graph
 
 
 def process_data(transac_data):
@@ -26,9 +26,9 @@ def process_data(transac_data):
     Lista['Porcentaje'] = (Lista['Frecuencia'] / Lista['Frecuencia'].sum()) #Porcentaje
     Lista = Lista.rename(columns={0 : 'Item'})
 
-    TransaccionesLista = transac_data.stack().groupby(level=0).apply(list).tolist() 
+    #TransaccionesLista = transac_data.stack().groupby(level=0).apply(list).tolist() 
 
-    return img_gen(Lista), TransaccionesLista
+    return img_gen(Lista)
 
 
 def img_gen(Lista):
@@ -47,6 +47,7 @@ def img_gen(Lista):
     return fig
 
 def application(dataSet, support, confidence, lift):
+    dataSet = dataSet.stack().groupby(level=0).apply(list).tolist() 
     ReglasC1 = apriori(dataSet, 
                    min_support=support, 
                    min_confidence=confidence, 
