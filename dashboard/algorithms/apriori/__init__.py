@@ -9,7 +9,6 @@ from .. import tools as tl
 from . import method as met
 from .layout import html_layout
 
-
 def init_dashboard_apriori(server):
     dash_app = dash.Dash(
         server=server,
@@ -59,8 +58,9 @@ def render_results(df,section_params,dash_app):
 #def render_results(df,dash_app):
 
     # Create Data Table y algoritmo funcional
-    table = tl.create_data_table(df,)
-    figure, res_df = met.method(df)
+    table = tl.create_data_table(df)
+    figure = met.methodGraph(df)
+    res_df = met.application(df,0.01,0.3,2.3)
 
     # Convertir el DataFrame en una lista de diccionarios
     res_data = res_df.to_dict('records')
@@ -95,21 +95,85 @@ def render_results(df,section_params,dash_app):
 
 # Bloque de slider/Input, se considera sufijos para identificarlos
 def block_params(dash_app):
-    section_mod1 = tl.mod_params_slide_input(dash_app, 0, 4, "-1")
-    section_mod2 = tl.mod_params_slide_input(dash_app, 0, 10, "-2")
-    section_mod3 = tl.mod_params_slide_input(dash_app, 0, 10, "-3")
-    #print(section_mod1.select_one("#input-circular-1").value)
-    layout = html.Div(children=[
-        section_mod1,
-        section_mod2,
-        section_mod3
-    ],
-    className='block-params-container'
+    section_mod1 = mod_params_slide_input(dash_app, 0, 1, "-1")
+    section_mod2 = mod_params_slide_input(dash_app, 0, 2, "-2")
+    section_mod3 = mod_params_slide_input(dash_app, 0, 6, "-3")
+
+    # Variables para almacenar los valores de los componentes
+    value_1 = (section_mod1.children[0].value, section_mod1.children[1].value)
+    value_2 = (section_mod2.children[0].value, section_mod2.children[1].value)
+    value_3 = (section_mod3.children[0].value, section_mod3.children[1].value)
+    print(value_1)
+    @dash_app.callback(
+        Output("output-container", "children"),
+        [Input("input-circular-1", "value"),
+         Input("input-circular-2", "value"),
+         Input("input-circular-3", "value"),
+         Input("slider-circular-1", "value"),
+         Input("slider-circular-2", "value"),
+         Input("slider-circular-3", "value")]
+    )
+    def update_output(*values):
+        return html.Div([
+            f"Value 1: {values[0]}, Slider Value 1: {values[3]}",
+            html.Br(),
+            f"Value 2: {values[1]}, Slider Value 2: {values[4]}",
+            html.Br(),
+            f"Value 3: {values[2]}, Slider Value 3: {values[5]}"
+        ])
+        #return met.method(dash_app,values[0],values[1],values[2])
+
+    layout = html.Div(
+        children=[
+            section_mod1,
+            section_mod2,
+            section_mod3,
+            html.Div(id="output-container")  # Contenedor para mostrar los valores
+        ],
+        className='block-params-container'
     )
     return layout
 
+
+# Componente dual Slider-Input. Los sufijos ayudan a no duplicarlos
+def mod_params_slide_input(app, mini, maxi, suffix=""):
+    input_id = "input-circular" + suffix
+    slider_id = "slider-circular" + suffix
+
+    section_mod = html.Div(
+        children=[
+            dcc.Slider(
+                id=slider_id,
+                min=mini,
+                max=maxi,
+                marks={i: str(i) for i in range(maxi + 1)},
+                value=(maxi / 3)
+            ),
+            dcc.Input(
+                id=input_id,
+                type="number",
+                min=mini,
+                max=maxi,
+                value=(maxi / 3)
+            )
+        ],
+        className='slider-input-container'
+    )
+
+    @app.callback(
+        [Output(input_id, "value"), Output(slider_id, "value")],
+        [Input(input_id, "value"), Input(slider_id, "value")]
+    )
+    def update_output(input_value, slider_value):
+        ctx = dash.callback_context
+        trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        value = input_value if trigger_id == input_id else slider_value
+        return value, value
+
+    return section_mod
+
 # Generación de los componentes tipo tabla donde se muestran las reglas
-def generate_card(data, index,res_data):
+def generate_card(data, index,res_data): 
     if not data:
         return None
 
