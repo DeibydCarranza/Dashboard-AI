@@ -1,6 +1,6 @@
 import os
 
-with open(os.path.join(os.path.dirname(__file__), '../../', 'templates', 'navbar.jinja2'), 'r') as file:
+with open(os.path.join(os.path.dirname(__file__), '../', 'templates', 'navbar.jinja2'), 'r') as file:
     navbar = file.read()
 
 html_layout = """
