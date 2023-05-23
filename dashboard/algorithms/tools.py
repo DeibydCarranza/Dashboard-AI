@@ -29,17 +29,6 @@ def box_upload(path_file,app):
         ),
         html.Div(id='output-data-upload'),
     ])
-    @app.callback(Output('output-data-upload', 'children'),
-                  [Input('upload-data', 'contents')])
-    def update_output(contents):
-        if contents is not None:
-            global uploaded_file_path
-            _, content_string = contents.split(',')
-            decoded = base64.b64decode(content_string)
-            with open(path_file, 'w') as f:
-                f.write(decoded.decode("utf-8"))
-            uploaded_file_path = path_file
-    return component
 
 def create_data_table(df):
     table = dash_table.DataTable(
