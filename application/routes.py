@@ -14,13 +14,24 @@ def index():
 
 @app.route('/apriori/')
 def apriori():
-    # with open(os.path.join(os.path.dirname(__file__), '../../../', 'algorithms', 'layout2.jinja2'), 'r') as file:
-    #     layout_A = file.read()
-    with open(os.path.join(os.path.dirname(__file__), '../../' 'apriori/', 'layout2.jinja2'), 'r') as file: 
-        layout_A = file.read()  
-    return render_template(layout_A)
-    #return render_template('index.jinja2')
+    # Agregar la llamada a métodos de cada algoritmo
 
+    return render_template('layout_Apriori.jinja2',
+            title="Apriori")
+
+@app.route('/clustering/')
+def clustering():
+    # Agregar la llamada a métodos de cada algoritmo
+    return render_template('layout_Clustering.jinja2',
+            title="Clustering")
+
+@app.route('/metricas/')
+def metricas():
+    # Agregar la llamada a métodos de cada algoritmo
+    return render_template('layout_Metricas.jinja2',
+            title="Metricas")
+
+## Ejemplo de cierta ruta
 @app.route('/chart1')
 def chart1():
 
