@@ -29,11 +29,21 @@
             <h1>Título del algoritmo</h1>
             <p>Agregar introducción y cosas random</p>
         </div>
-        
+        <div class="box-upload">
+            <form id="csv-form" action="{{ url_for('upload_csv') }}" method="POST" enctype="multipart/form-data">
+                <input type="file" name="csv_file" accept=".csv" style="display: none;" onchange="submitForm()">
+                <div class="upload-container">
+                    Carga de archivo <a>Select CSV File</a>
+                </div>
+                <div id="output-data-upload"></div>
+            </form>
+        </div>
+
 
     </div>
     <footer>
         <script type="text/javascript" src="../../static/js/barra.js"></script>
+        <script type="text/javascript" src="../../static/js/upload.js"></script>
 
     </footer>
 </body>

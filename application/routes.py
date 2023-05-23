@@ -1,6 +1,6 @@
 #from application import app
 from flask import current_app as app
-from flask import render_template
+from flask import render_template, request, redirect, url_for
 import pandas as pd
 import json
 import plotly
@@ -30,6 +30,25 @@ def metricas():
     # Agregar la llamada a métodos de cada algoritmo
     return render_template('layout_Metricas.jinja2',
             title="Metricas")
+
+# Decorador de carga para la carga y sobreescritura de los archivos
+@app.route('/upload_csv', methods=['POST'])
+def upload_csv():
+    if 'csv_file' not in request.files:
+        return "No file uploaded"
+    
+    file = request.files['csv_file']
+    
+    if file.filename == '':
+        return "No file selected"
+    
+    if file and file.filename.endswith('.csv'):
+        csv_data = pd.read_csv(file)
+        csv_data.to_csv(os.path.join(app.root_path, 'data/file.csv'), index=False)
+        return "CSV file uploaded successfully and overwritten data.csv"
+    else:
+        return "Invalid file format. Please upload a CSV file."
+
 
 ## Ejemplo de cierta ruta
 @app.route('/chart1')
