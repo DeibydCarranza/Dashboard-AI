@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/styles.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdn.plot.ly/plotly-2.4.2.min.js">
+
 
     <title>{{ title }}</title>
       <link rel="shortcut icon" href="{{ url_for('static', filename='dist/img/favicon.png') }}" type="image/x-icon" />
@@ -38,13 +41,17 @@
                 <div id="output-data-upload"></div>
             </form>
         </div>
-
-
     </div>
+
     <footer>
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
         <script type="text/javascript" src="../../static/js/barra.js"></script>
         <script type="text/javascript" src="../../static/js/upload.js"></script>
-
-    </footer>
+     </footer>
 </body>
 </html>

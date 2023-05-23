@@ -1,23 +1,25 @@
 #from application import app
 from flask import current_app as app
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request,render_template_string
 import pandas as pd
 import json
 import plotly
 import plotly.express as px
 import os
 
+global path_file
+path_file = os.path.join(os.path.dirname(__file__), './data/', 'file.csv')
+df = pd.read_csv(path_file)
+
 @app.route('/')
 def index():    
-
     return render_template('index.jinja2')
 
 @app.route('/apriori/')
 def apriori():
-    # Agregar la llamada a métodos de cada algoritmo
 
-    return render_template('layout_Apriori.jinja2',
-            title="Apriori")
+    
+    return render_template('layout_Apriori.jinja2', title="Apriori", data_table=data_table)
 
 @app.route('/clustering/')
 def clustering():

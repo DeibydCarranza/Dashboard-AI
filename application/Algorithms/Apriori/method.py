@@ -3,12 +3,7 @@ import plotly.graph_objects as go
 from apyori import apriori
 
 
-def methodGraph(transac_data):
-    graph = process_data(transac_data)
-    return graph
-
-
-def process_data(transac_data):
+def process_dataGraph(transac_data):
     #Se incluyen todas las transacciones en una sola lista
     Transacciones = transac_data.values.reshape(-1).tolist() 
 
