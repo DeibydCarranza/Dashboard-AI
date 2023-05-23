@@ -1,6 +1,6 @@
 import dash
 from dash import dash_table,dcc,html,Input, Output, State
-from .. import layout
+from . import layout
 from .. import layouts  
 from .. import callbacks
 #Create a Plotly Dash dashboard

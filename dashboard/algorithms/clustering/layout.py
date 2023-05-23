@@ -1,6 +1,6 @@
 import os
 
-with open(os.path.join(os.path.dirname(__file__), '../', 'templates', 'navbar.jinja2'), 'r') as file:
+with open(os.path.join(os.path.dirname(__file__), '../../', 'templates', 'navbar.jinja2'), 'r') as file:
     navbar = file.read()
 
 html_layout = """
@@ -18,7 +18,7 @@ html_layout = """
             <header class="header-top">
                 <div class="nav-wrapper">
                     <a href="/">
-                        <h1>Métricas de distancia</h1>
+                        <h1>Cluster</h1>
                     </a>
                 </div>
             </header>         
