@@ -11,7 +11,11 @@ class Config:
     """Flask configuration variables."""
 
     # General Config
+<<<<<<< HEAD
     FLASK_APP = "wsgi.py"
+=======
+    FLASK_APP = "run.py"
+>>>>>>> main
     FLASK_ENV = environ.get("FLASK_ENV")
     SECRET_KEY = environ.get("SECRET_KEY")
 
@@ -23,4 +27,8 @@ class Config:
     # Static Assets
     STATIC_FOLDER = "static"
     TEMPLATES_FOLDER = "templates"
+<<<<<<< HEAD
     COMPRESSOR_DEBUG = environ.get("COMPRESSOR_DEBUG")
+=======
+    COMPRESSOR_DEBUG = environ.get("COMPRESSOR_DEBUG")
+>>>>>>> main

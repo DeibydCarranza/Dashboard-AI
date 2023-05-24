@@ -36,7 +36,11 @@ $(VIRTUAL_ENVIRONMENT):
 
 .PHONY: run
 run: env
+<<<<<<< HEAD
 	$(LOCAL_PYTHON) -m wsgi
+=======
+	$(LOCAL_PYTHON) -m run
+>>>>>>> main
 
 .PHONY: install
 install:
