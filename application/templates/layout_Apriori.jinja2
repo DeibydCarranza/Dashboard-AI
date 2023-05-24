@@ -44,6 +44,7 @@
     </div>
 
     <div class="content-container">
+        <p style="text-align:center">Mostrando el 20% de los resultados</p>
         <div class="table-container">
             <table id="myTable" class="display">
                 <thead>
@@ -55,17 +56,18 @@
                         {% endfor %}
                     </tr>
                 </thead>
-            <tbody>
-                {% for item in data %}
-                    <tr>
-                        {% for column in item.keys() %}
-                            {% if loop.index > 1 %}  <!-- Omitir la primera columna -->
-                                <td>{{ item[column] }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
+                <tbody>
+                    {% set num_items =(data| length * 0.2) |int %}
+                    {% for item in data[:num_items] %}  <!-- Mostrar solo los primeros 20% -->
+                        <tr>
+                            {% for column in item.keys() %}
+                                {% if loop.index > 1 %} 
+                                    <td>{{ item[column] }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
 
@@ -75,26 +77,34 @@
                 {{ pagination.links }}
             </div>
         {% endif %}
+
+        <div id="graph-transac" class="graphs-render" ></div>
     </div>
 
 
-
     <footer>
-
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.js"></script>
 
         <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>  
         <script type="text/javascript" src="../../static/js/barra.js"></script>
         <script type="text/javascript" src="../../static/js/upload.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#myTable').DataTable({
-            scrollY: 400,
-            scrollX: true,
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var graphJson = {{ graph_json | safe }};
+                Plotly.plot('graph-transac', graphJson.data, graphJson.layout);
             });
-        });
-    </script>
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable({
+                scrollY: 400,
+                scrollX: true,
+                });
+            });
+        </script>
     </footer>
 </body>
 </html>
