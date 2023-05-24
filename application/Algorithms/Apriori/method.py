@@ -4,24 +4,20 @@ from apyori import apriori
 
 
 def process_dataGraph(transac_data):
-    #Se incluyen todas las transacciones en una sola lista
-    Transacciones = transac_data.values.reshape(-1).tolist() 
+    # Se incluyen todas las transacciones en una sola lista
+    Transacciones = transac_data.values.reshape(-1).tolist()
 
-    #Se crea una matriz (dataframe) usando la lista y se incluye una columna 'Frecuencia'
+    # Se crea una matriz (dataframe) usando la lista y se incluye una columna 'Frecuencia'
     Lista = pd.DataFrame(Transacciones)
     Lista['Frecuencia'] = 1
 
-    #Se agrupa los elementos
+    # Se agrupa los elementos
     Lista = Lista.groupby(by=[0], as_index=False).count().sort_values(by=['Frecuencia'], ascending=True)
     Lista['Porcentaje'] = (Lista['Frecuencia'] / Lista['Frecuencia'].sum())
-    Lista = Lista.rename(columns={0 : 'Item'})
+    Lista = Lista.rename(columns={0: 'Item'})
 
-    return img_gen(Lista)
-
-
-def img_gen(Lista):
-    fig = go.Figure([go.Bar(x=Lista['Frecuencia'], y=Lista['Item'], 
-                    orientation='h',marker=dict(color='green'))])
+    # Genera la gráfica utilizando Plotly
+    fig = go.Figure([go.Bar(x=Lista['Frecuencia'], y=Lista['Item'], orientation='h', marker=dict(color='green'))])
     fig.update_layout(
         title='Distribución de los datos',
         xaxis_title='Frecuencia',
@@ -32,7 +28,10 @@ def img_gen(Lista):
             size=12
         )
     )
-    return fig
+    #Convirtiendo la imagen a JSON
+    graph_json = fig.to_json()
+
+    return graph_json
 
 def application(dataSet, support, confidence, lift):
     dataSet = dataSet.stack().groupby(level=0).apply(list).tolist() 

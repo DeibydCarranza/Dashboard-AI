@@ -7,6 +7,7 @@ import plotly
 import plotly.express as px
 import os
 from sklearn.preprocessing import StandardScaler, MinMaxScaler 
+from .Algorithms.Apriori.method import process_dataGraph,application
 
 global path_file,path_file_json
 path_file = os.path.join(os.path.dirname(__file__), './data/', 'file.csv')
@@ -23,7 +24,12 @@ def apriori():
     print(path_file)
     df = pd.read_csv(path_file) 
     data = df.to_dict(orient='records')
-    return render_template('layout_Apriori.jinja2', title="Apriori", data=data)
+
+    # Generar la gráfica y obtener el JSON
+    graph_json = process_dataGraph(df)
+
+    return render_template('layout_Apriori.jinja2', 
+                title="Apriori", data=data, graph_json=graph_json)
 
 @app.route('/clustering/')
 def clustering():
