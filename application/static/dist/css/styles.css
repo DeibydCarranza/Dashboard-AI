@@ -3452,6 +3452,70 @@ body.dark .home .text{
 body.dark .content-container {
     color: var(--text-color);
 }
+.container-slider-input {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      ". . . . param-1 param-1 param-1"
+      ". imagen-params imagen-params . param-2 param-2 param-2"
+      ". . . . param-3 param-3 param-3"
+      ". . . . . button-params .";
+  }
+  
+  .button-params { grid-area: button-params; }
+  
+  .param-1 {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      ". type-param-1 ."
+      "area-param-1 area-param-1 area-param-1"
+      "area-param-1 area-param-1 area-param-1";
+    grid-area: param-1;
+  }
+  
+  .area-param-1 { grid-area: area-param-1; }
+  
+  .type-param-1 { grid-area: type-param-1; }
+  
+  .param-2 {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      ". type-param2 ."
+      "area-param-2 area-param-2 area-param-2"
+      "area-param-2 area-param-2 area-param-2";
+    grid-area: param-2;
+  }
+  
+  .area-param-2 { grid-area: area-param-2; }
+  
+  .type-param2 { grid-area: type-param2; }
+  
+  .param-3 {  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      ". type-param-3 ."
+      "area-param-3 area-param-3 area-param-3"
+      "area-param-3 area-param-3 area-param-3";
+    grid-area: param-3;
+  }
+  
+  .area-param-3 { grid-area: area-param-3; }
+  
+  .type-param-3 { grid-area: type-param-3; }
+  
+  .imagen-params { grid-area: imagen-params; }
+  
 // Upload_section
 .box-upload {
     margin: 50px 10px;
@@ -3486,6 +3550,50 @@ body.dark .content-container {
 #render-container {
   display: none;
 }
+
+/* Boton Slider - input*/
+.submit-button .button-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.container-slider-input .submit-button {
+  position: relative;
+  display: inline-block;
+}
+
+.container-slider-input .boton-send {
+  padding: 10px 20px;
+  background-color: #337ab7;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.container-slider-input .boton-send:hover {
+  background-color: #286090;
+}
+
+.container-slider-input .boton-send:active {
+  transform: translateY(1px);
+}
+
+.container-slider-input .submit-button:active .button-effect {
+  opacity: 1;
+}
+
+
 /* -- main content -- */
 .content-container {
     position: relative;
