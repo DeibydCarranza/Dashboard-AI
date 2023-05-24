@@ -34,3 +34,5 @@ dash-renderer==1.9.1 ; python_version >= "3.9" and python_version < "4.0"
 dash-table==5.0.0 ; python_version >= "3.9" and python_version < "4.0"
 dash==2.9.3 ; python_version >= "3.9" and python_version < "4.0"
 Flask-Paginate==2022.1.8
+scikit-learn == 1.2.2
+sklearn == 0.0.post5
