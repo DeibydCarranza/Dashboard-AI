@@ -1,6 +1,6 @@
 #from application import app
 from flask import current_app as app
-from flask import render_template, request
+from flask import render_template, request,redirect, url_for
 import pandas as pd
 import json
 import plotly
@@ -23,7 +23,8 @@ def index():
 
 @app.route('/apriori/')
 def apriori():
-    print(path_file)
+    uploaded_file = request.args.get('uploaded_file')
+    print(uploaded_file)
     df = pd.read_csv(path_file) 
     data = df.to_dict(orient='records')
 
@@ -55,13 +56,17 @@ def upload_csv():
         return "No file uploaded"
     
     file = request.files['csv_file']
-    
+
     if file.filename == '':
         return "No file selected"
     
     if file and file.filename.endswith('.csv'):
         csv_data = pd.read_csv(file)
         csv_data.to_csv(os.path.join(app.root_path, 'data/file.csv'), index=False)
+        
+        current_route = request.path
+        if current_route == '/apriori/':
+            return redirect(url_for('apriori', uploaded_file='file.csv', additional_data='Valor adicional'))
         return "CSV file uploaded successfully and overwritten data.csv"
     else:
         return "Invalid file format. Please upload a CSV file."

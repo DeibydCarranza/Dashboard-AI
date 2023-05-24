@@ -3483,10 +3483,9 @@ body.dark .content-container {
 #data-table tbody td:nth-child(n+11) {
   display: none;
 }
-.render-results.content-container {
+#render-container {
   display: none;
 }
-
 /* -- main content -- */
 .content-container {
     position: relative;
