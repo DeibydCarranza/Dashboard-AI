@@ -1,7 +1,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 from apyori import apriori
-
+import json
+import plotly
 
 def process_dataGraph(transac_data):
     # Se incluyen todas las transacciones en una sola lista
@@ -29,7 +30,7 @@ def process_dataGraph(transac_data):
         )
     )
     #Convirtiendo la imagen a JSON
-    graph_json = fig.to_json()
+    graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     return graph_json
 
@@ -58,5 +59,4 @@ def application(dataSet, support, confidence, lift):
     
     df_resultados = pd.DataFrame(resultados)
     return df_resultados
-
 

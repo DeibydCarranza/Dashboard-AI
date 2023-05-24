@@ -6,11 +6,13 @@ import json
 import plotly
 import plotly.express as px
 import os
+import csv
 from sklearn.preprocessing import StandardScaler, MinMaxScaler 
 from .Algorithms.Apriori.method import process_dataGraph,application
 
 global path_file,path_file_json
 path_file = os.path.join(os.path.dirname(__file__), './data/', 'file.csv')
+path_estandarizacion = os.path.join(os.path.dirname(__file__), './data/', 'escalamiento.csv')
 path_file_json = os.path.join(os.path.dirname(__file__), '../', 'data.json')
 
 @app.route('/')
@@ -94,7 +96,7 @@ def standarizar():
     file = MinMaxScaler()
     MEstandarizada = file.fit_transform(pd.read_csv(path_file)) 
     DFrame_standar = pd.DataFrame(MEstandarizada) 
-    DFrame_standar.to_csv(path_file, index=False)
+    DFrame_standar.to_csv(path_estandarizacion, index=False)
     return "Estandarizados"
 
 @app.route('/normalizar')
@@ -103,5 +105,21 @@ def normalizar():
     file = StandardScaler()
     MEnormalizada = file.fit_transform(pd.read_csv(path_file)) 
     DFrame_standar = pd.DataFrame(MEnormalizada) 
-    DFrame_standar.to_csv(path_file, index=False)
+    DFrame_standar.to_csv(path_estandarizacion, index=False)
     return "Normalizados"
+
+@app.route('/display_table')
+def display_table():
+    data = []
+    with open((os.path.dirname(__file__), './data/', 'escalamiento.csv'), 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            data.append(row)
+    return render_template('table.html', data=data)
+
+@app.route('/read_csv')
+def read_csv():
+    df = pd.read_csv(path_estandarizacion)
+    df_string = df.to_string(index=False)  # Convertir el DataFrame a una cadena
+    return df_string
+
