@@ -37,8 +37,8 @@ def process_dataGraph(transac_data):
 def application(dataSet, support, confidence, lift):
     dataSet = dataSet.stack().groupby(level=0).apply(list).tolist() 
     ReglasC1 = apriori(dataSet, 
-                   min_support=support, 
-                   min_confidence=confidence, 
+                   min_support=support/100, 
+                   min_confidence=confidence/100, 
                    min_lift=lift)
     ResultadosC1 = list(ReglasC1)
     resultados = []

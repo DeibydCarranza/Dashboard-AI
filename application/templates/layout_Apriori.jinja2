@@ -122,6 +122,31 @@
         </div>
         </div>
 
+        <table id="tablaResultados">
+            <thead>
+                <tr>
+                    <th>Regla</th>
+                    <th>Antecedente</th>
+                    <th>Consecuente</th>
+                    <th>Soporte</th>
+                    <th>Confianza</th>
+                    <th>Elevación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in res_data %}
+                <tr>
+                    <td>{{ item['Regla'] }}</td>
+                    <td>{{ item['Antecedente'] }}</td>
+                    <td>{{ item['Consecuente'] }}</td>
+                    <td>{{ item['Soporte'] }}</td>
+                    <td>{{ item['Confianza'] }}</td>
+                    <td>{{ item['Elevación'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
     </div>
 
     
@@ -137,6 +162,7 @@
         <script type="text/javascript" src="../../static/js/barra.js"></script>
         <script type="text/javascript" src="../../static/js/upload.js"></script>
         <script type="text/javascript" src="../../static/js/components.js"></script>
+        
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var graphJson = {{ graph_json | safe }};

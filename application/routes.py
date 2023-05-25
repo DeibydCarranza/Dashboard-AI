@@ -1,6 +1,6 @@
 #from application import app
 from flask import current_app as app
-from flask import render_template, request,redirect, url_for
+from flask import render_template, request,redirect, url_for,Response
 import pandas as pd
 import json
 import plotly
@@ -25,16 +25,19 @@ def index():
 
 @app.route('/apriori/')
 def apriori():
-    uploaded_file = request.args.get('uploaded_file')
-    print(uploaded_file)
     df = pd.read_csv(path_file) 
     data = df.to_dict(orient='records')
 
     # Generar la gráfica y obtener el JSON
     graph_json = process_dataGraph(df)
-
+    
+    res_df = application(df,1,30,2.3)
+    
+    # Convertir el DataFrame en una lista de diccionarios
+    res_data = res_df.to_dict('records')
+    res_data = [data for data in res_data if isinstance(data, dict)]
     return render_template('layout_Apriori.jinja2', 
-                title="Apriori", data=data, graph_json=graph_json)
+                title="Apriori", data=data, graph_json=graph_json, res_data=res_data)
 
 @app.route('/clustering/')
 def clustering():
@@ -69,29 +72,6 @@ def upload_csv():
     else:
         return "Invalid file format. Please upload a CSV file."
 
-
-## Ejemplo de cierta ruta
-@app.route('/chart1')
-def chart1():
-
-    # Graph One
-    df = px.data.medals_wide()
-    fig1 = px.bar(df, x="nation", y=["gold", "silver", "bronze"], title="Wide-Form Input")
-    graph1JSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
-
-    # Graph two
-    df = px.data.iris()
-    fig2 = px.scatter_3d(df, x='sepal_length', y='sepal_width', z='petal_width',
-              color='species',  title="Iris Dataset")
-    graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
-
-    # Graph three
-    df = px.data.gapminder().query("continent=='Oceania'")
-    fig3 = px.line(df, x="year", y="lifeExp", color='country',  title="Life Expectancy")
-    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
-
-
-    return render_template('index.html', graph1JSON=graph1JSON,  graph2JSON=graph2JSON, graph3JSON=graph3JSON)
 
 @app.route('/standarizar')
 def standarizar():
