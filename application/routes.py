@@ -63,10 +63,6 @@ def upload_csv():
     if file and file.filename.endswith('.csv'):
         csv_data = pd.read_csv(file)
         csv_data.to_csv(os.path.join(app.root_path, 'data/file.csv'), index=False)
-        
-        current_route = request.path
-        if current_route == '/apriori/':
-            return redirect(url_for('apriori', uploaded_file='file.csv', additional_data='Valor adicional'))
         return "CSV file uploaded successfully and overwritten data.csv"
     else:
         return "Invalid file format. Please upload a CSV file."
