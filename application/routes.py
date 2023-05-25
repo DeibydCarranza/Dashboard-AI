@@ -9,6 +9,8 @@ import os
 import csv
 from sklearn.preprocessing import StandardScaler, MinMaxScaler 
 from .Algorithms.Apriori.method import process_dataGraph,application
+from scipy.spatial.distance import cdist 
+import jsonify
 
 global path_file,path_file_json
 path_file = os.path.join(os.path.dirname(__file__), './data/', 'file.csv')
@@ -109,18 +111,26 @@ def normalizar():
     DFrame_standar.to_csv(path_estandarizacion, index=False)
     return "Normalizados"
 
-@app.route('/display_table')
-def display_table():
-    data = []
-    with open((os.path.dirname(__file__), './data/', 'escalamiento.csv'), 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            data.append(row)
-    return render_template('table.html', data=data)
-
 @app.route('/read_csv')
 def read_csv():
     df = pd.read_csv(path_estandarizacion)
     df_string = df.to_string(index=False)  # Convertir el DataFrame a una cadena
     return df_string
 
+@app.route('/metricas')
+def calcu_metrica():
+    metrica = request.args.get('metrica')
+    
+    if metrica == 'chebyshev':
+        pree_metrica = cdist(pd.read_csv(path_estandarizacion).values, pd.read_csv(path_estandarizacion).values, metric = metrica)
+    elif metrica == 'euclidean':
+        pree_metrica = cdist(pd.read_csv(path_estandarizacion).values, pd.read_csv(path_estandarizacion).values, metric = metrica)
+    elif metrica == 'cityblock':
+        pree_metrica = cdist(pd.read_csv(path_estandarizacion).values, pd.read_csv(path_estandarizacion).values, metric = metrica)
+    elif metrica == 'minkowski':
+        pree_metrica = cdist(pd.read_csv(path_estandarizacion).values, pd.read_csv(path_estandarizacion).values, metric = metrica, p=1.5)
+    else:
+        # Métrica no válida
+        return jsonify({'error': 'Métrica no válida'})
+    post_metrica = pd.DataFrame(pree_metrica)
+    return post_metrica.to_json()

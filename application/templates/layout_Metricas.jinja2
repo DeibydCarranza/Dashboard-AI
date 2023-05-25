@@ -39,26 +39,29 @@
             </form>
         </div>
         <! ---------------------------- Estandarización ---------------------------------->
-        <div>
+        <div class = 'buttons_metrics'>
             <button type="button" class="btn btn-primary btn-sm"  onclick="handleClick(event,'estandarizar')">
                 Escalar
             </button>
             <button type="button" class="btn btn-secondary btn-sm" onclick="handleClick(event,'normalizar')">
                 Normalizar
             </button
-        </div>
         <! ---------------------------- View results ---------------------------------->
-        
-        <button id="display-btn">
-            Mostrar tabla
-        </button>
-        
-        <div id="table-container">
-        
+
+            <button id="display-btn">
+                Mostrar tabla
+            </button>
         </div>
+        <div id="table-container"></div>
+         <! ---------------------------- Dropdown ---------------------------------->
+        <select id="myDropdown">
+            <option value="chebyshev">Chevichev</option>
+            <option value="euclidean">Euclidiana</option>
+            <option value="cityblock">Manhattan</option>
+            <option value="minkowski">Minckoski</option>
+        </select>
+        <div id="output"></div>
 
-
-        
     </div>
     <footer>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -181,8 +184,33 @@
             // Envía la petición
             request.send();
             }
+            </script>
+            <script>
+            // Obtener el elemento del dropdown
+            var dropdown = document.getElementById("myDropdown");
 
-        </script>
+            // Agregar un evento para capturar el cambio en la selección del dropdown
+            dropdown.addEventListener("change", function() {
+            // Obtener el valor seleccionado
+            var selectedMetric = dropdown.value;
+            
+            // Realizar una solicitud HTTP para obtener la matriz usando el valor seleccionado
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/metricas?metrica=" + encodeURIComponent(selectedMetric), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                // La solicitud se completó correctamente
+                var matriz = JSON.parse(xhr.responseText);
+                
+                // Mostrar la matriz en la página
+                var output = document.getElementById("output");
+                output.textContent = JSON.stringify(matriz);
+                }
+            };
+            xhr.send();
+            });
+            </script>
+
     </footer>
 </body>
 </html>
