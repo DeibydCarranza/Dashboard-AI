@@ -21,7 +21,7 @@
     <header class="header-top">
         <div class="nav-wrapper">
             <a href="/">
-                <h1>Asociación</h1>
+                <h1>Inicio</h1>
             </a>
         </div>
     </header>         
@@ -29,8 +29,8 @@
 
     <div class="content-container">
         <div>
-            <h1>Título del algoritmo</h1>
-            <p>Agregar introducción y cosas random</p>
+            <h1>Apriori</h1>
+            <p>Descripción</p>
         </div>
         <div class="box-upload">
             <form id="csv-form" action="{{ url_for('upload_csv') }}" method="POST" enctype="multipart/form-data">
@@ -41,6 +41,10 @@
                 <div id="output-data-upload"></div>
             </form>
         </div>
+    </div>
+
+    <div class="container">
+        <button id="myButton">Mostrar</button>
     </div>
 
     <div id="render-container" class="content-container">

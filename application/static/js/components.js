@@ -26,3 +26,7 @@ document.getElementById('submitButton').addEventListener('click', function() {
     //Implementar
 
 });
+/** Botón de despliegue del contenido */
+document.getElementById("myButton").addEventListener("click", function() {
+  document.getElementById("render-container").classList.toggle("show");
+});
